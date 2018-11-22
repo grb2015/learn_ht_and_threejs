@@ -16,14 +16,16 @@
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
-			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+			var geometry = new THREE.BoxGeometry( 1, 1, 1 );  // new 一个几何体 (这里是Box)
 			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			var cube = new THREE.Mesh( geometry, material );
+			var cube = new THREE.Mesh( geometry, material ); // 几何体 + 材质组成一个Mesh. 这里cube是Mesh对象！
 			scene.add( cube );
 
-			camera.position.z = 5;
+			camera.position.z = 5;  // 防止cube和摄像机重叠
 
-			var animate = function () {
+			//renderer.render( scene, camera );   // 一次渲染
+
+			var animate = function () {		// animate函数会周期的执行,所以这里还是重复渲染就成了动画
 				requestAnimationFrame( animate );
 
 				cube.rotation.x += 0.01;

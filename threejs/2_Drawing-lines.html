@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script>
+
+			// step1 创建场景
+			var scene = new THREE.Scene();
+
+			// step2 设置相机
+			var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
+			camera.position.set( 0, 0, 100 );
+			camera.lookAt( 0, 0, 0 );
+
+			// step3 渲染器
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			// step4 创建几何体和材质，并把他们组合在一个生成一个对象(Mesh或Line等)
+			// 线的材质
+			var material = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+			//2个顶点决定一条线,3个顶点，所有有两条线
+			var geometry = new THREE.Geometry();
+			geometry.vertices.push(new THREE.Vector3( -10, 0, 0) );
+			geometry.vertices.push(new THREE.Vector3( 0, 10, 0) );
+			geometry.vertices.push(new THREE.Vector3( 10, 0, 0) );
+			// 将几何体和材质组成一条Line ,这里就不是Mesh了
+			var line = new THREE.Line( geometry, material );
+
+			// step5 将对象加入场景中
+			scene.add( line );
+
+			// step6 进行渲染
+			renderer.render( scene, camera );
+
+
+			
+		</script>
+	</body>
+</html>
