@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-
+<!-- 查找sharp的方法 -->
 <head>
     <script src="https://unpkg.com/konva@2.4.2/konva.min.js"></script>
     <meta charset="utf-8">
-    <title>Konva Drag and Drop Collision Detection Demo</title>
+    <title>查找sharp的方法 </title>
     <style>
         body {
             margin: 0;
@@ -24,41 +24,31 @@
             width: 500,
             height: 500
         });
-
         // then create layer
         var layer = new Konva.Layer();
-
         var circle = new Konva.Circle({
             x: stage.getWidth() / 2,
             y: stage.getHeight() / 2,
-        radius: 10,
-        fill: 'red',
-        id : 'face',
-        name : 'red circle'
+            radius: 10,
+            fill: 'red',
+            id : 'face',
+            name : 'red circle'
         });
         layer.add(circle);
-
         // then try to search
-
         // find by type
         ccicle = layer.find('Circle'); // all circles
         console.log(ccicle);
-
         // find by id
         fface = layer.findOne('#face');
         console.log(fface);
-
-
         // find by name (like css class)
         let reddd = layer.find('.red');
         console.log(reddd);
-
         // add the shape to the layer
         layer.add(circle);
-
         // add the layer to the stage
         stage.add(layer);
-
         // draw the image
         layer.draw();
     </script>
