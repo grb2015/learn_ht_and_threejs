@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<!--https://konvajs.github.io/docs/overview.html  一个最基本的konva程序包含的元素 -->
+<head>
+    <script src="https://unpkg.com/konva@2.4.2/konva.min.js"></script>
+    <meta charset="utf-8">
+    <title>一个最基本的konva程序包含的元素</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #F0F0F0;
+        }
+    </style>
+</head>
+
+<body>
+         <!--- 右侧属性栏 begin ---------------------------------------------------------------------------------------------- -->
+         <div>
+                <!-- <form> -->
+                        <!--- 位置属性 -->
+                        Position: <input type="text" id="X">  <input type="text" id="Y">
+                        <br><br>
+                        <!--- 缩放属性 -->
+                        Scale: <input type="checkbox" id="Scale_checkbox"> <input type="text" id="X_scalue" value = "1">  <input type="text" id="Y_scalue" value = "1">
+                        <br><br>
+                        <!--- 旋转属性(顺时针旋转角度) -->
+                        Rotation: <input type="text" id="RotationClockwise" value = "0">   
+                    <!-- </form> -->
+                    <br>
+                    <!--- 事件的下拉框 -->
+                    <select id="Event1"> 
+                        <option value ="volvo">X旋转</option> 
+                        <option value ="saab">Y旋转</option> 
+                        <option value="opel">标签</option> 
+                        <option value="audi">显隐</option>
+                    </select>
+                    
+                    <input type="text" id="EventSelectBox1">
+                    <br><br>
+                    
+                    <select id="Event2"> 
+                        <option value ="volvo">X旋转</option> 
+                        <option value ="saab">Y旋转</option> 
+                        <option value="opel">标签</option> 
+                        <option value="audi">显隐</option>
+                    </select>
+                        <!--- 事件的文本框 -->
+                    <input type="text" id="EventSelectBox2">
+                    
+                    <br><br>
+                    <!--- 绑点 -->
+                    Point Name : <input type="text" id="point_name" value = "未绑点">
+            </div>
+         <!--- 右侧属性栏 END ---------------------------------------------------------------------------------------------- -->
+
+    <div id="container"></div>
+    <script>
+        // first we need to create a stage
+        var stage = new Konva.Stage({
+        container: 'container',   // id of container <div>
+        width: 500,
+        height: 500
+        });
+
+        // then create layer
+        var layer = new Konva.Layer();
+
+        // create our shape
+        var circle = new Konva.Circle({
+            x: stage.getWidth() / 2,
+            y: stage.getHeight() / 2,
+            radius: 70,
+            fill: 'red',
+            stroke: 'black',
+            strokeWidth: 4
+        });
+
+        // add the shape to the layer
+        layer.add(circle);
+
+        // add the layer to the stage
+        stage.add(layer);
+
+        // draw the image
+        layer.draw();
+
+        
+        
+        setPointNameVaule("X",circle.attrs.x);
+        setPointNameVaule("Y",circle.attrs.y);
+        // setPointNameVaule("point_name","在这里输入进行绑点!");
+
+        // 设置输入框的值
+        function setPointNameVaule(id,value){
+            let pvalue = document.getElementById(id).value;
+            console.log("pvalue = ");  // 为什么显示不出值来?
+            console.log(document.getElementById(id));
+            document.getElementById(id).value = value;
+        }
+     
+    </script>
+
+</body>
+
+</html>
