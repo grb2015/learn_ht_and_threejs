@@ -69,6 +69,34 @@
 
         document.body.style.cursor = 'default';
     });
+    
+    // 将group的sharp解散出来放到layer中,原来的group中children为0,但是不删除
+    function splite_sharps_and_group(group,layer){
+        Childrens = Childrens = group.getChildren();
+        ChildrenAmount  = Childrens.length;
+        // step1 : 备份group中的children
+        let ListBackupChildren = new Array(ChildrenAmount);
+        for (let i = 0 ;i < ChildrenAmount; i++){
+          console.log(" ####### [splite_sharps_and_group]  Childrens[i] =  ") ;
+          console.log(Childrens[i])
+          ListBackupChildren[i] = Childrens[i];
+        }
+        // step2 : 将children从group中移除
+        group.removeChildren();  
+            
+        // step3 : 将备份的child重新独自加入layer,但不是以group的方式了。
+        for (let i = 0 ;i < ChildrenAmount ; i++){
+          layer.add( ListBackupChildren[i] );
+        } 
+
+        //打印调试
+        console.log("############# [splite_sharps_and_group] ListBackupChildren = ");
+        console.log(ListBackupChildren);
+        console.log("############# [splite_sharps_and_group]  group = ");
+        console.log(group);
+        return ListBackupChildren;
+       
+    }
     stage.on('click tap', function (e) {
       // if click on empty area - remove all transformers
       console.log("########### e  = ");
@@ -100,6 +128,16 @@
       console.log(" ####### after remove group ") ;
       console.log(group);
       layer.draw();
+      var ListBackupChildren ;
+      group.on('dragend', function() {
+        console.log("#### ##########################################################  dragend ");
+        ListBackupChildren = splite_sharps_and_group(group,layer);
+        console.log("############# ListBackupChildren = ");
+        console.log(ListBackupChildren);
+        console.log("############# group = ");
+        console.log(group);
+        layer.draw();
+    });
     })
   </script>
 

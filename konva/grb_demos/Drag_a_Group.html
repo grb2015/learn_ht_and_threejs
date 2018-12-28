@@ -41,7 +41,8 @@
             name: colors[i],
             fill: colors[i],
             stroke: 'black',
-            strokeWidth: 4
+            strokeWidth: 4,
+            draggable: true
         });
         group.add(box);
     }
@@ -68,12 +69,16 @@
     shapesLayer.add(group);
     stage.add(shapesLayer);
 
+    // 备份所有的child
     for (let i = 0 ;i < 6; i++){
         console.log(" ####### Childrens[i] =  ") ;
         console.log(Childrens[i])
         backupChildrens[i] = Childrens[i];
-        group.removeChildren(Childrens[i])
     }
+    // 移除所有的child
+    group.removeChildren();  
+
+
     console.log(" ####### after remove backupChildrens ") ;
     console.log(backupChildrens);
     // rt = Childrens[0].remove();  // 这个无返回值
@@ -82,11 +87,22 @@
     // console.log(" ####### after remove rt ") ;
     // console.log(rt);
 
+    // 改变坐标貌似没用？
+    console.log(" ####### backupChildrens[0].x  =  ") ;
+    console.log(backupChildrens[0].attrs.x);
+    backupChildrens[0].attrs.x += 2000;
+    console.log(" ####### after backupChildrens[0].x  =  ") ;
+    console.log(backupChildrens[0].attrs.x);
+
+    // 将备份的child重新独自加入layer,但不是以group的方式了。
+
     for (let i = 0 ;i < 6; i++){
         shapesLayer.add(backupChildrens[i]);
     } 
-    // shapesLayer.add(group);
     shapesLayer.draw();
+    backupChildrens[0].attrs.x += 2000;
+    shapesLayer.draw();
+
 
 </script>
 
