@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<!-- 学习事件 1.单击左键 2.鼠标滑过-->
+<!-- 参考： https://konvajs.github.io/docs/overview.html -->
+<head>
+  <script src="https://unpkg.com/konva@2.4.2/konva.min.js"></script>
+  <meta charset="utf-8">
+  <title>Konva Shape Events Demo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #F0F0F0;
+    }
+  </style>
+</head>
+
+<body>
+
+             <!--- 右侧属性栏 begin ---------------------------------------------------------------------------------------------- -->
+             <div>
+                    <!-- <form> -->
+                            <!--- 位置属性 -->
+                            Position: <input type="text" id="X">  <input type="text" id="Y">
+                            <br><br>
+                            <!--- 缩放属性 -->
+                            Scale: <input type="checkbox" id="Scale_checkbox"> <input type="text" id="X_scalue" value = "1">  <input type="text" id="Y_scalue" value = "1">
+                            <br><br>
+                            <!--- 旋转属性(顺时针旋转角度) -->
+                            Rotation: <input type="text" id="RotationClockwise" value = "0">   
+                            
+                        <!-- </form> -->
+                        <br>
+                        <!--- 事件的下拉框 -->
+                        <select id="Event1"> 
+                            <option value ="saab">顺时针旋转</option> 
+                            <option value="opel">标签</option> 
+                            <option value="audi">显隐</option>
+                            <option value="audi">打开摄像机</option>
+                        </select>
+                        
+                        <input type="text" id="EventSelectBox1">
+                        <br><br>
+                        
+                        <select id="Event2"> 
+                            <option value ="saab">顺时针旋转</option> 
+                            <option value="opel">标签</option> 
+                            <option value="audi">显隐</option>
+                            <option value="audi">打开摄像机</option>
+                        </select>
+                            <!--- 事件的文本框 -->
+                        <input type="text" id="EventSelectBox2">
+                        
+                        <br><br>
+                        <!--- 绑点Name -->
+                        Point Name : <input type="text" id="point_name" value = "未绑点">
+                        <br><br>
+                         <!--- 绑点的Tag -->
+                        Tag: <input type="text" id="Tag" value = "0">   
+                </div>
+             <!--- 右侧属性栏 END ---------------------------------------------------------------------------------------------- -->
+  <div id="container"></div>
+  <script>
+    function writeMessage(message) {
+      text.setText(message);
+      layer.draw();
+    }
+    var stage = new Konva.Stage({
+      container: 'container',
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
+    var layer = new Konva.Layer();
+    var triangle = new Konva.RegularPolygon({
+      x: 80,
+      y: 120,
+      sides: 3,
+      radius: 80,
+      fill: '#00D2FF',
+      stroke: 'black',
+      strokeWidth: 4
+    });
+    var text = new Konva.Text({
+      x: 10,
+      y: 10,
+      fontFamily: 'Calibri',
+      fontSize: 24,
+      text: '',
+      fill: 'black'
+    });
+    // 离开三角形的事件
+    triangle.on('mouseout', function () {
+      writeMessage('Mouseout triangle');    ///  这里writeMessage是写到text里面去了,所以必须有一个text
+    });
+    // 在三角形的区域内移动的事件
+    triangle.on('mousemove', function () {
+      var mousePos = stage.getPointerPosition();
+      var x = mousePos.x - 190;
+      var y = mousePos.y - 40;
+      writeMessage('x: ' + x + ', y: ' + y);
+    });
+    var circle = new Konva.Circle({
+      x: 230,
+      y: 100,
+      radius: 60,
+      fill: 'red',
+      stroke: 'black',
+      strokeWidth: 4
+    });
+    // 鼠标滑到圆中的事件(这个可用于划过某个图形,动态显示标签)
+    circle.on('mouseover', function () {
+      writeMessage('Mouseover circle');
+    });
+    // 离开圆的事件
+    circle.on('mouseout', function () {
+      writeMessage('Mouseout circle');
+    });
+    // 在圆中点击鼠标事件
+    circle.on('mousedown', function (e) {
+      writeMessage('[circle.on] Mousedown circle');
+      console.log("[circle.on]  ################ e = ");
+      console.log(e);
+    });
+    circle.on('mouseup', function () {
+      writeMessage('Mouseup circle');
+    });
+    layer.add(triangle);
+    layer.add(circle);
+    layer.add(text);
+    // add the layer to the stage
+    stage.add(layer);
+    
+    var cur_object = circle;
+    update_right_bar(cur_object);
+    function update_right_bar(cur_object){
+        setPointNameVaule("X",cur_object.attrs.x);
+        setPointNameVaule("Y",cur_object.attrs.y);
+    }
+    // 设置输入框的值
+    function setPointNameVaule(id,value){
+        let pvalue = document.getElementById(id).value;
+        // console.log("pvalue = ");  // 为什么显示不出值来?
+        // console.log(document.getElementById(id));
+        document.getElementById(id).value = value;
+    }
+    // 点击layer事件,点击之后右侧的属性要变
+    layer.on('mousedown', function (e) {
+        console.log("[layer.on]  ################ e = ");
+        console.log(e);
+        cur_object = e.target;
+        update_right_bar(cur_object);
+    })
+  </script>
+
+</body>
+
+</html>
