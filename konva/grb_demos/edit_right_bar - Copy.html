@@ -18,7 +18,6 @@
 </head>
 
 <body>
-
              <!--- 右侧属性栏 begin ---------------------------------------------------------------------------------------------- -->
              <div>
                     <!-- <form> -->
@@ -34,7 +33,7 @@
                         <!-- </form> -->
                         <br>
                         <!--- 事件的下拉框 -->
-                        <select id="Event1"> 
+                        <select id="EventSelectBox1" > 
                             <option value ="action_None">action_None</option> 
                             <option value ="action_rotate">顺时针旋转</option> 
                             <option value="action_tag">标签</option> 
@@ -45,7 +44,7 @@
                         <input type="text" id="EventInputBox1" onchange = "EventInputBox1_Onchange(this.value)">
                         <br><br>
                         
-                        <select id="Event2"> 
+                        <select id="EventSelectBox2"> 
                             <option value ="action_None">action_None</option> 
                             <option value ="action_rotate">顺时针旋转</option> 
                             <option value="action_tag">标签</option> 
@@ -66,6 +65,10 @@
   <div id="container"></div>
   <script>
 
+    // ------------------------------- Test html  begin -------------------------------
+    // setAttrById("Event1","action_tag");  // 改变select box的值
+    // ------------------------------- Test html end -------------------------------
+
    // -------------------------------- editor中的全局变量 -------------------------------------------------------------- --
 
     // var Editor ={
@@ -78,18 +81,16 @@
     jci_object["object"] = "";
 
    // ---------------------------------------------------------------------------------------------- --
-
     var stage = new Konva.Stage({
       container: 'container',
       width: window.innerWidth,
       height: window.innerHeight
     });
-
     var layer = new Konva.Layer();
-
     var triangle = new Konva.RegularPolygon({
       x: 80,
       y: 120,
+      userData:[ {"action_rotate":"顺时针转90度"} , {"action_rotate":"顺时针转90度"} ],
       sides: 3,
       radius: 80,
       fill: '#00D2FF',
@@ -101,6 +102,7 @@
     var circle = new Konva.Circle({
       x: 230,
       y: 100,
+      userData:[ {"action_Show":"On show"} , {"action_Show":"On show"} ],
       radius: 60,
       fill: 'red',
       stroke: 'black',
@@ -113,14 +115,13 @@
     // add the layer to the stage
     stage.add(layer);
 
-
     
     // var cur_object = circle;
     jci_object["object"] = circle;
 
     const SELECT_BOXS_AMOUNT = 2;  // userDate的下拉框数量
     var listUserDate = [{},{}];
-    var objectUserDataRowList = new Array(SELECT_BOXS_AMOUNT);
+    // var objectUserDataRowList = new Array(SELECT_BOXS_AMOUNT);
 	var objectUserDateSelectBoxList = new Array(SELECT_BOXS_AMOUNT);
 	var objectUserDateInputBoxList = new Array(SELECT_BOXS_AMOUNT);
 	var curUserDateKey = new Array(SELECT_BOXS_AMOUNT);  // 存放下拉框当前的key
@@ -128,60 +129,72 @@
 
     var curObject ;
 
+    // 更新位置显示
     function update_Postion(jci_object){
-        setAttrById("X",jci_object['object'].attrs.x);
-        setAttrById("Y",jci_object['object'].attrs.y);
+        setAttrById("X",jci_object.attrs.x);
+        setAttrById("Y",jci_object.attrs.y);
     }
 
-    // 更新右侧属性栏的信息
+    // 更新右侧属性栏的信息  每次点击之后执行,后者每次改变下拉框后执行
     function update_User_date(jci_object){ 
-        // 1.更新坐标
-        setAttrById("X",jci_object['object'].attrs.x);
-        setAttrById("Y",jci_object['object'].attrs.y);
-
-        // 2.更新action  
-        // 若object.userData不是[{},{}] 格式, 则设置为[{},{}] 格式
-		if( !(jci_object['object'].userData instanceof Array) || jci_object['object'].userData.length !== SELECT_BOXS_AMOUNT ) {
-			jci_object['object'].userData = [{},{}] ;	
+        // update_Postion(jci_object);
+        // 更新action  
+        // 若userData不是[{},{}] 格式, 则设置为[{},{}] 格式
+		if( !(jci_object.attrs.userData instanceof Array) || jci_object.attrs.userData.length !== SELECT_BOXS_AMOUNT ) {
+			jci_object.attrs.userData= [{},{}] ;	
 		}
 
 		// 如果跳转了对象,则需更新当前下拉框的值(从新对象的object.userData读取)
-		if(curObject !== jci_object['object']){
-			curObject = jci_object['object'];
-			for(let i = 0;i<SELECT_BOXS_AMOUNT;i++){
+		if(curObject !== jci_object){
+			curObject = jci_object;
+            let tmeUserDate = jci_object.attrs.userData;  // 获取当前对象的userDate字段
+			for(let i = 0; i < SELECT_BOXS_AMOUNT ; i++){ // 遍历UserDate数组
 				//console.log("#### siderbar.Object.js [updateUI] load a new object ");
-				curUserDateKey[i] = jci_object['object'].userData[i];  
-                objectUserDateSelectBoxList[i] = curUserDateKey[i] ;  // 设置下拉框的值
+				let tmpKey = Object.keys( tmeUserDate[i] )[0];   // 从object读取第i个下拉框的值
+                let temValue = tmeUserDate[i][tmpKey] ;
+                //objectUserDateSelectBoxList[i] = curUserDateKey[i] ;  // 设置下拉框的值
+                console.log("####### [update_User_date] tmpKey = "+tmpKey);
+                console.log("####### [update_User_date] temValue = "+temValue);
+                setAttrById("EventSelectBox"+(i+1),tmpKey );  // 改变select box的值
+                setAttrById("EventInputBox"+(i+1),temValue );  // 改变select box的值
 
 			}
 		}
-        // 根据当前下拉框的值更新输入框的值
-        for(let  i = 0;i < SELECT_BOXS_AMOUNT; i++){
-            if(curUserDateKey[i] && curUserDateKey[i] !== "action_None"){
-            //   objectUserDateInputBoxList[i].setDisabled( false );
-              let  InputBoxVal = (jci_object['object'].userData[i][curUserDateKey[i]] ? jci_object['object'].userData[i][curUserDateKey[i]] : "");
-              //objectUserDateInputBoxList[i].setValue(InputBoxVal);
-              setAttrById("EventInputBox"+(i+1),InputBoxVal);
-            }
-            else if(curUserDateKey[i] === "action_None"){   // 下拉框的值为"action_None"时,输入框中显示空白且禁止被输入  
-              objectUserDateInputBoxList[i].setValue(""); // 并且要将("action_None","") 键值对更新到object.userData中	 
-              objectUserDateInputBoxList[i].setDisabled( true );  
-              object.userData[i] = {} ;
-              object.userData[i][curUserDateKey[i]] = ""; 
-            }
-            else{ //下拉框的值未定义时,输入框中显示空白且禁止被输入
-              objectUserDateInputBoxList[i].setValue(""); 		
-              objectUserDateInputBoxList[i].setDisabled( true );  
-            }
-        }
+        else{   // 没有切换对象,但是当前对象的下拉框或者值可能变了
+
+            // // 根据当前下拉框的值更新输入框的值
+            // for(let  i = 0;i < SELECT_BOXS_AMOUNT; i++){
+            //     if(curUserDateKey[i] && curUserDateKey[i] !== "action_None"){
+            //         //   objectUserDateInputBoxList[i].setDisabled( false );
+            //             let  tmpUserDate = jci_object.attrs.userData[i];
+            //             let  InputBoxVal = (tmpUserDate[curUserDateKey[i]] ? tmpUserDate[i][curUserDateKey[i]] : "");
+            //             //objectUserDateInputBoxList[i].setValue(InputBoxVal);
+            //             // setAttrById("EventInputBox"+(i+1),InputBoxVal);
+            //             jci_object.attrs.userData[i] = {} ;
+            //             jci_object.attrs.userData[i][curUserDateKey[i]] = InputBoxVal; 
+            //     }
+            //     else if(curUserDateKey[i] === "action_None"){   // 下拉框的值为"action_None"时,输入框中显示空白且禁止被输入  
+            //         setAttrById("EventInputBox"+(i+1),"");
+            //     //   objectUserDateInputBoxList[i].setValue(""); // 并且要将("action_None","") 键值对更新到object.userData中	 
+            //     //   objectUserDateInputBoxList[i].setDisabled( true );  
+            //         jci_object.attrs.userData[i]= {} ;
+            //         jci_object.userData[i][curUserDateKey[i]] = ""; 
+            //     }
+            //     else{ //下拉框的值未定义时,输入框中显示空白且禁止被输入
+            //     //   objectUserDateInputBoxList[i].setValue(""); 		
+            //     //   objectUserDateInputBoxList[i].setDisabled( true );  
+            //     }
+            // }
         
+        }
+
     }
 
     // 通过id找到控件,然后设置控件的值为value
     function setAttrById(id,value){
         console.log(" [setAttrById] id =  "+id );
         console.log(" [setAttrById] value =  "+value );
-        let pvalue = document.getElementById(id).value;
+        // let pvalue = document.getElementById(id).value;
         // console.log("pvalue = ");  // 为什么显示不出值来?
         // console.log(document.getElementById(id));
         document.getElementById(id).value = value;
@@ -192,8 +205,9 @@
         console.log("[layer.on - mousedown ]  ################ e = ");
         console.log(e);
         // cur_object = e.target;
-        jci_object['object'] = e.target;
+        jci_object = e.target;
         update_Postion(jci_object);
+        update_User_date(jci_object);
     })
 
     // 拖拽完后需要更新右侧属性
@@ -205,6 +219,7 @@
 
         jci_object['object'] = e.target;
         update_Postion(jci_object);
+        // update_User_date(jci_object);
     })
 
     // userDate中输入框改变触发的函数
@@ -212,13 +227,6 @@
 			listUserDate[0] = {};  // listUserDate[0] 中值保留一对(key,val)
 			if(curUserDateKey[0]){
 				listUserDate[0][curUserDateKey[0]] = newVal ;
-
-                // TODO 将新的listUserDate写到json的userDate字段中
-
-				// // 设置 object的 userDate字段 
-				// var object = editor.selected;
-				// editor.execute( new SetValueCommand( object, 'userData', listUserDate ) );   
-				//updateUI(object); //上面execute之后会自动调用updateUI
 			}
 			else{	
 				console.log("##### [error] : siderbar.Object.js [Input - onChange] curUserDateKey[0]) = "+curUserDateKey[0]);
@@ -228,11 +236,6 @@
 			listUserDate[1] = {};  // listUserDate[1] 中值保留一对(key,val)
 			if(curUserDateKey[1]){
 				listUserDate[1][curUserDateKey[1]] = newVal ;
-
-				// // 设置 object的 userDate字段 
-				// var object = editor.selected;
-				// editor.execute( new SetValueCommand( object, 'userData', listUserDate ) );   
-				//updateUI(object); //上面execute之后会自动调用updateUI
 			}
 			else{	
 				console.log("##### [error] : siderbar.Object.js [Input - onChange] curUserDateKey[1]) = "+curUserDateKey[1]);
