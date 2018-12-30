@@ -22,13 +22,14 @@
              <div>
                     <!-- <form> -->
                             <!--- 位置属性 -->
-                            Position: <input type="text" id="X">  <input type="text" id="Y">
+                            Position:   x: <input type="text" id="X">   y:<input type="text" id="Y">
                             <br><br>
                             <!--- 缩放属性 -->
-                            Scale: <input type="checkbox" id="Scale_checkbox"> <input type="text" id="X_scalue" value = "1">  <input type="text" id="Y_scalue" value = "1">
+                            <!-- Scale: <input type="checkbox" id="Scale_checkbox"> <input type="text" id="X_scalue" value = "1">  <input type="text" id="Y_scalue" value = "1"> -->
+                            Scale:  x:<input type="text" id="X_scalue" value = "1"> y:<input type="text" id="Y_scalue" value = "1">
                             <br><br>
                             <!--- 旋转属性(顺时针旋转角度) -->
-                            Rotation: <input type="text" id="RotationClockwise" value = "0">   
+                            Rotation: <input type="text" id="Rotation" value = "0">   
                             
                         <!-- </form> -->
                         <br>
@@ -96,19 +97,29 @@
       fill: '#00D2FF',
       stroke: 'black',
       strokeWidth: 4,
-      draggable: true
+      draggable: true,
+      scale: {
+        x: 2,
+        y: 2
+      },
+      rotation: 45
     });
 
     var circle = new Konva.Circle({
-      x: 230,
-      y: 100,
-      userData:[ {"action_Show":"On show"} , {"action_Show":"On show"} ],
-      radius: 60,
-      fill: 'red',
-      stroke: 'black',
-      strokeWidth: 4,
-      draggable: true
-    });
+        x: 230,
+        y: 100,
+        userData:[ {"action_Show":"On show"} , {"action_Show":"On show"} ],
+        radius: 60,
+        fill: 'red',
+        stroke: 'black',
+        strokeWidth: 4,
+        draggable: true,
+        scale: {
+            x: 0.5,
+            y: 0.5
+        },
+        rotation:60
+      });
 
     layer.add(triangle);
     layer.add(circle);
@@ -133,8 +144,14 @@
     // }
     // 更新位置显示
     function update_Postion(jci_object){
+        // 设置坐标
         setAttrById("X",jci_object.attrs.x);
         setAttrById("Y",jci_object.attrs.y);
+        // 设置scale
+        setAttrById("X_scalue",jci_object.attrs.scaleX);
+        setAttrById("Y_scalue",jci_object.attrs.scaleY);
+        // 设置Rotation
+        setAttrById("Rotation",jci_object.attrs.rotation);
     }
 
     // 更新右侧属性栏的信息  每次点击之后执行,后者每次改变下拉框后执行
