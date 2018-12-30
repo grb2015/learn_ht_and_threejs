@@ -22,7 +22,7 @@
              <div>
                     <!-- <form> -->
                             <!--- 位置属性 -->
-                            Position:   x: <input type="text" id="X">   y:<input type="text" id="Y">
+                            Position:   x: <input type="text" id="X"  onchange = "PositionX_Onchange(this.value)" >   y:<input type="text" id="Y" onchange = "PositionY_Onchange(this.value)">
                             <br><br>
                             <!--- 缩放属性 -->
                             <!-- Scale: <input type="checkbox" id="Scale_checkbox"> <input type="text" id="X_scalue" value = "1">  <input type="text" id="Y_scalue" value = "1"> -->
@@ -154,79 +154,24 @@
         setAttrById("Rotation",jci_object.attrs.rotation);
     }
 
-    // 更新右侧属性栏的信息  每次点击之后执行,后者每次改变下拉框后执行
-    // function update_User_date(jci_object){ 
-    //     // update_Postion(jci_object);
-    //     // 更新action  
-    //     // 若userData不是[{},{}] 格式, 则设置为[{},{}] 格式
-	// 	if( !(jci_object.attrs.userData instanceof Array) || jci_object.attrs.userData.length !== SELECT_BOXS_AMOUNT ) {
-	// 		jci_object.attrs.userData= [{},{}] ;	
-	// 	}
-
-	// 	// 如果跳转了对象,则需更新当前下拉框的值(从新对象的object.userData读取)
-	// 	if(curObject !== jci_object){
-	// 		curObject = jci_object;
-    //         //let tmeUserDate = jci_object.attrs.userData;  // 获取当前对象的userDate字段
-	// 		for(let i = 0; i < SELECT_BOXS_AMOUNT ; i++){ // 遍历UserDate数组
-	// 			//console.log("#### siderbar.Object.js [updateUI] load a new object ");
-    //             // 从object读取第i个下拉框的值
-	// 			let curUserDateKey[i] = Object.keys( jci_object.attrs.userData[i] )[0];   
-    //             setAttrById("EventSelectBox"+(i+1),curUserDateKey[i] );  // 改变select box的值
-
-	// 		}
-	// 	}
-    //     else{   // 没有切换对象,但是当前对象的下拉框或者值可能变了
-
-    //         // // 根据当前下拉框的值更新输入框的值
-    //         // for(let  i = 0;i < SELECT_BOXS_AMOUNT; i++){
-    //         //     if(curUserDateKey[i] && curUserDateKey[i] !== "action_None"){
-    //         //         //   objectUserDateInputBoxList[i].setDisabled( false );
-    //         //             let  tmpUserDate = jci_object.attrs.userData[i];
-    //         //             let  InputBoxVal = (tmpUserDate[curUserDateKey[i]] ? tmpUserDate[i][curUserDateKey[i]] : "");
-    //         //             //objectUserDateInputBoxList[i].setValue(InputBoxVal);
-    //         //             // setAttrById("EventInputBox"+(i+1),InputBoxVal);
-    //         //             jci_object.attrs.userData[i] = {} ;
-    //         //             jci_object.attrs.userData[i][curUserDateKey[i]] = InputBoxVal; 
-    //         //     }
-    //         //     else if(curUserDateKey[i] === "action_None"){   // 下拉框的值为"action_None"时,输入框中显示空白且禁止被输入  
-    //         //         setAttrById("EventInputBox"+(i+1),"");
-    //         //     //   objectUserDateInputBoxList[i].setValue(""); // 并且要将("action_None","") 键值对更新到object.userData中	 
-    //         //     //   objectUserDateInputBoxList[i].setDisabled( true );  
-    //         //         jci_object.attrs.userData[i]= {} ;
-    //         //         jci_object.userData[i][curUserDateKey[i]] = ""; 
-    //         //     }
-    //         //     else{ //下拉框的值未定义时,输入框中显示空白且禁止被输入
-    //         //     //   objectUserDateInputBoxList[i].setValue(""); 		
-    //         //     //   objectUserDateInputBoxList[i].setDisabled( true );  
-    //         //     }
-    //         // }
-        
-    //     }
-
-    // }
-
     // 通过id找到控件,然后设置控件的值为value
     function setAttrById(id,value){
-        console.log(" [setAttrById] id =  "+id );
-        console.log(" [setAttrById] value =  "+value );
-        // let pvalue = document.getElementById(id).value;
-        // console.log("pvalue = ");  // 为什么显示不出值来?
-        // console.log(document.getElementById(id));
+        // console.log(" [setAttrById] id =  "+id );
+        // console.log(" [setAttrById] value =  "+value );
         document.getElementById(id).value = value;
     }
 
     // 点击layer事件,点击不同物体之后右侧的属性要变
     layer.on('mousedown', function (e) {
-        console.log("[layer.on - mousedown ]  ################ e = ");
-        console.log(e);
-        // cur_object = e.target;
+        // console.log("[layer.on - mousedown ]  ################ e = ");
+        // console.log(e);
         let clickObject  = e.target;
         update_Postion(clickObject);
         // 如果切换了对象,则需要更新其事件输入框的内容
         if(curObject !== clickObject){
 			curObject = clickObject;
-            console.log("[layer.on - mousedown ]  ################ curObject.attrs.userData = ");
-            console.log(curObject.attrs.userData);
+            console.log("[layer.on - mousedown ]  ################ curObject = ");
+            console.log(curObject);
 			for(let i = 0; i < SELECT_BOXS_AMOUNT ; i++){ // 遍历UserDate数组
 				let curKey = Object.keys( curObject.attrs.userData[i] )[0];   
                 setAttrById("EventSelectBox"+(i+1),curKey);  // 改变select box的值
@@ -296,6 +241,20 @@
         setAttrById("EventInputBox2","" );
         curObject.attrs.userData[1]  = {}
         curObject.attrs.userData[1][newSelectVal] = "";
+    }
+
+    function PositionX_Onchange(PositionX){
+        curObject.setAttrs({ 
+                x   :  parseInt(PositionX) 
+        });
+        layer.draw();
+
+    }
+    function PositionY_Onchange(PositionY){
+        curObject.setAttrs({  
+            y   :  parseInt(PositionY) 
+        });
+        layer.draw();
     }
 
   </script>
