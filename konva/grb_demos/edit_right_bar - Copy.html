@@ -29,7 +29,7 @@
                             Scale:  x:<input type="text" id="X_scalue" value = "1" onchange = "scale_x_onchange(this.value)" > y:<input type="text" id="Y_scalue" value = "1" onchange = "scale_y_onchange(this.value)">
                             <br><br>
                             <!--- 旋转属性(顺时针旋转角度) -->
-                            Rotation: <input type="text" id="Rotation" value = "0">   
+                            Rotation: <input type="text" id="Rotation" value = "0" onchange = "Rotation_onchange(this.value)"  >   
                             
                         <!-- </form> -->
                         <br>
@@ -272,6 +272,14 @@
             scale: {
                 y: parseInt(scaleY) 
             }
+        });
+        layer.draw();
+    }
+
+    // 在right Bar中改变了rotation ,面板中的Object也随之更改
+    function Rotation_onchange(new_rotaion){
+        curObject.setAttrs({ 
+                rotation: parseInt(new_rotaion) 
         });
         layer.draw();
     }
