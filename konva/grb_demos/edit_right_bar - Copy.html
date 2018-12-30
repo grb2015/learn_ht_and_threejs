@@ -24,9 +24,9 @@
                             <!--- 位置属性 -->
                             Position:   x: <input type="text" id="X"  onchange = "PositionX_Onchange(this.value)" >   y:<input type="text" id="Y" onchange = "PositionY_Onchange(this.value)">
                             <br><br>
-                            <!--- 缩放属性 -->
+                            <!--- 缩放属性 --> 
                             <!-- Scale: <input type="checkbox" id="Scale_checkbox"> <input type="text" id="X_scalue" value = "1">  <input type="text" id="Y_scalue" value = "1"> -->
-                            Scale:  x:<input type="text" id="X_scalue" value = "1"> y:<input type="text" id="Y_scalue" value = "1">
+                            Scale:  x:<input type="text" id="X_scalue" value = "1" onchange = "scale_x_onchange(this.value)" > y:<input type="text" id="Y_scalue" value = "1" onchange = "scale_y_onchange(this.value)">
                             <br><br>
                             <!--- 旋转属性(顺时针旋转角度) -->
                             Rotation: <input type="text" id="Rotation" value = "0">   
@@ -243,6 +243,7 @@
         curObject.attrs.userData[1][newSelectVal] = "";
     }
 
+    // 在right Bar中改变了position ,面板中的Object也随之更改
     function PositionX_Onchange(PositionX){
         curObject.setAttrs({ 
                 x   :  parseInt(PositionX) 
@@ -253,6 +254,24 @@
     function PositionY_Onchange(PositionY){
         curObject.setAttrs({  
             y   :  parseInt(PositionY) 
+        });
+        layer.draw();
+    }
+    // 在right Bar中改变了scale ,面板中的Object也随之更改
+
+    function scale_x_onchange(scaleX){
+        curObject.setAttrs({ 
+                scale: {
+                    x: parseInt(scaleX) 
+                }
+        });
+        layer.draw();
+    }
+    function scale_y_onchange(scaleY){
+        curObject.setAttrs({  
+            scale: {
+                y: parseInt(scaleY) 
+            }
         });
         layer.draw();
     }
