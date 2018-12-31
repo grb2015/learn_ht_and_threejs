@@ -27,8 +27,7 @@
       width: width,
       height: height
     });
-    console.log("########### stage  = ");
-    console.log(stage);
+
     var layer = new Konva.Layer();
     stage.add(layer);
 
@@ -55,30 +54,34 @@
     layer.add(rect2);
     console.log("########### after add rect2  ");
     layer.draw();
+    var isGroupPositionInited = false ;
     var group = new Konva.Group({
         draggable: true
     });
     layer.add(group);
-    group.on('mouseover', function() {
-        console.log("########### group.on('mouseover'  ");
+    console.log("############# init group = ");
+    console.log(group);
+    console.log(group.attrs.x);
+    console.log(group.attrs.y);
+    // group.on('mouseover', function() {
+    //     console.log("########### group.on('mouseover'  ");
+    //     document.body.style.cursor = 'pointer';
+    // });
+    // group.on('mouseout', function() {
+    //     console.log("########### group.on('mouseout'  ");
 
-        document.body.style.cursor = 'pointer';
-    });
-    group.on('mouseout', function() {
-        console.log("########### group.on('mouseout'  ");
-
-        document.body.style.cursor = 'default';
-    });
+    //     document.body.style.cursor = 'default';
+    // });
     
     // 将group的sharp解散出来放到layer中,原来的group中children为0,但是不删除
-    function splite_sharps_and_group(group,layer){
-        Childrens = Childrens = group.getChildren();
-        ChildrenAmount  = Childrens.length;
+    function splite_sharps_from_group(group,layer){
+        let Childrens = group.getChildren();
+        let ChildrenAmount  = Childrens.length;
         // step1 : 备份group中的children
         let ListBackupChildren = new Array(ChildrenAmount);
         for (let i = 0 ;i < ChildrenAmount; i++){
-          console.log(" ####### [splite_sharps_and_group]  Childrens[i] =  ") ;
-          console.log(Childrens[i])
+          // console.log(" ####### [splite_sharps_and_group]  Childrens[i] =  ") ;
+          // console.log(Childrens[i])
           ListBackupChildren[i] = Childrens[i];
         }
         // step2 : 将children从group中移除
@@ -90,55 +93,150 @@
         } 
 
         //打印调试
-        console.log("############# [splite_sharps_and_group] ListBackupChildren = ");
+        console.log("############# [splite_sharps_from_group] ListBackupChildren = ");
         console.log(ListBackupChildren);
-        console.log("############# [splite_sharps_and_group]  group = ");
+        console.log("############# [splite_sharps_from_group]  group = ");
         console.log(group);
+        console.log(group.attrs.x);
+        console.log(group.attrs.y);
+        for (let i = 0 ;i < ChildrenAmount; i++){
+          
+          rect1.setAttrs({  
+                    // circle.attrs.draggable = false;
+                  x   :  group.attrs.x,
+                  y   :  group.attrs.y
+
+          });
+
+          rect2.setAttrs({  
+                // circle.attrs.draggable = false;
+                x   :  group.attrs.x,
+                y   :  group.attrs.y
+          });
+          layer.draw();
+          // ListBackupChildren[i].setAttrs({  
+          //           // circle.attrs.draggable = false;
+          //           draggable   :  true
+          //       });
+          // console.log("############# [splite_sharps_from_group] consListBackupChildren[i] = ");
+          // console.log(ListBackupChildren[i]);
+          // ListBackupChildren[i].attrs.x = group.attrs.x;
+          // ListBackupChildren[i].attrs.y = group.attrs.y;
+          // console.log("############# [splite_sharps_from_group] 2  consListBackupChildren[i] = ");
+          // console.log(ListBackupChildren[i]);
+        }
+        console.log(layer);
+        // group.remove();
+        // console.log(layer);
+        
+        // stage.find('Transformer').destroy();     // 找到场景中的所有Transformer对象，然后销毁
+        // layer.draw();  // 刷新
         return ListBackupChildren;
        
     }
+
+    // 点击stage的事件。如果点中的是rect 则加入到group中,并且将其加一个外框
     stage.on('click tap', function (e) {
       // if click on empty area - remove all transformers
-      console.log("########### e  = ");
+      console.log("########### [stage.on] - [click tap] e  = ");
       console.log(e);
+      console.log(layer);
+
+      // 1. 如果点击的是state 空白处 则销毁所有的外框
       if (e.target === stage) {
-        // TransResult = stage.find('Transformer')
-        // console.log("########### TransResult  = ");
-        // console.log(TransResult);
         stage.find('Transformer').destroy();     // 找到场景中的所有Transformer对象，然后销毁
         layer.draw();  // 刷新
         return;
       }
+      // 2. 如果点中的不是rect 什么都不做
       // do nothing if clicked NOT on our rectangles
       if (!e.target.hasName('rect')) { // 如果点击不是rect,这里的rect是我们自己命名的(name: 'rect',)。
         console.log("########### yes e.target.hasName('rect') ");
         return;
       }
+      
+      // rect1.setAttrs({  
+      //               // circle.attrs.draggable = false;
+      //               draggable   :  true
+      //           });
+      // rect2.setAttrs({  
+      //     // circle.attrs.draggable = false;
+      //     draggable   :  true
+      // });
       // remove old transformers
       // TODO: we can skip it if current rect is already selected
     //   stage.find('Transformer').destroy();  // 如果我们要多选,这里就不取消了
 
+
+
       // create new transformer
+      // 3. 点击一个我们的rect,就加入到group中. 并且给这个group附加一个外框
+      // console.log("########### PROCESS RECT !");
+      // e.target.attrs.draggable = false;
+      // console.log("########### [stage.on] - [click tap] after set drag e.target  = ");
+      // console.log(e.target);
+      layer.draw();
       var tr = new Konva.Transformer();
       layer.add(tr);
-      //tr.attachTo(e.target);
-      
-      group.add(e.target); // 点击一个我们的rect,就加入到group中
+      group.add(e.target); 
       tr.attachTo(group);
-      console.log(" ####### after remove group ") ;
-      console.log(group);
       layer.draw();
-      var ListBackupChildren ;
-      group.on('dragend', function() {
-        console.log("#### ##########################################################  dragend ");
-        ListBackupChildren = splite_sharps_and_group(group,layer);
-        console.log("############# ListBackupChildren = ");
-        console.log(ListBackupChildren);
-        console.log("############# group = ");
-        console.log(group);
-        layer.draw();
-    });
+      console.log("------- stage.on('click tap)-------- before set position group = ");
+      console.log(group);
+      if( !isGroupPositionInited ){
+        console.log("######## INIT group  Positon ");
+        group.attrs.x = e.target.attrs.x ;
+        group.attrs.y = e.target.attrs.y ;
+        isGroupPositionInited = true ;
+      }
+      console.log("------- stage.on('click tap)-------- after  set position group = ");
+      console.log(group);
+
+
+
     })
+
+    // rect1.on('dragstart', function() {
+    //   console.log(" ####----------------------------------- #######  rect1 dragstart  before rect1 = ");
+    //   console.log(rect1);
+    //   rect1.setAttrs({  
+    //                 // circle.attrs.draggable = false;
+    //                 draggable   :  true
+    //             });
+    // });
+
+    // rect2.on('dragstart', function() {
+    //   console.log(" ####----------------------------------- #######  rect2 dragstart  before rect2 = ");
+    //   console.log(rect2);
+    //   rect1.setAttrs({  
+    //                 draggable   :  true
+    //             });
+    // });
+
+    group.on('dragstart', function() {
+      console.log(" ----------[group.on - dragstart ]-------------------------   group dragstart  before rect1 = ");
+      console.log(rect1);
+      rect1.setAttrs({  
+                    // circle.attrs.draggable = false;
+                    draggable   :  true
+                });
+      console.log(" -------[group.on - dragstart ]-------------------------  group dragstart  before rect2 = ");
+      console.log(rect2);
+      rect2.setAttrs({  
+          // circle.attrs.draggable = false;
+          draggable   :  true
+      });
+    });
+    group.on('dragend', function() {
+        console.log("#### ##########################################################  group dragend ");
+        let ListBackupChildren = splite_sharps_from_group(group,layer);
+        layer.draw();
+        // console.log("############# ListBackupChildren = ");
+        // console.log(ListBackupChildren);
+        // console.log("############# group = ");
+        // console.log(group);
+        
+    });
   </script>
 
 </body>
