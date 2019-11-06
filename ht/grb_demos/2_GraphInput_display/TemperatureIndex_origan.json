@@ -1,0 +1,298 @@
+﻿{
+  "v": "6.0.5",
+  "p": {
+    "autoAdjustIndex": true,
+    "hierarchicalRendering": true
+  },
+  "a": {},
+  "d": [
+    {
+      "c": "ht.Node",
+      "i": 764,
+      "p": {
+        "position": {
+          "x": 549.7188090737069,
+          "y": 328.2264671774117
+        },
+        "width": 385.0576995585294,
+        "height": 229.54706564517934
+      },
+      "s": {
+        "shape": "roundRect",
+        "opacity": 1,
+        "shape.background": "rgba(217,217,217,0.8)",
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 765,
+      "p": {
+        "position": {
+          "x": 550.6948742183396,
+          "y": 329.654524959073
+        },
+        "width": 369.4406572443688,
+        "height": 212.25169917836493
+      },
+      "s": {
+        "shape": "roundRect",
+        "opacity": 1,
+        "shape.background": "rgb(48,87,104)",
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 766,
+      "p": {
+        "position": {
+          "x": 685.6637680396938,
+          "y": 189.84653475501977
+        },
+        "width": 73.26066099875123,
+        "height": 46.93323233229208
+      },
+      "s": {
+        "shape": "rightTriangle",
+        "opacity": 1,
+        "shape.background": "rgba(217,217,217,0.8)",
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 767,
+      "p": {
+        "rotation": 4.712030057436412,
+        "position": {
+          "x": 409.1053615819869,
+          "y": 189.91659628346
+        },
+        "width": 47.04434719034263,
+        "height": 72.8354055299094
+      },
+      "s": {
+        "shape": "rightTriangle",
+        "opacity": 1,
+        "shape.background": "rgba(217,217,217,0.8)",
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 768,
+      "p": {
+        "position": {
+          "x": 547.2786462121136,
+          "y": 189.91642647184722
+        },
+        "width": 203.509582656409,
+        "height": 47.073015765946906
+      },
+      "s": {
+        "shape": "rect",
+        "opacity": 1,
+        "shape.background": "rgba(217,217,217,0.8)",
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 769,
+      "p": {
+        "position": {
+          "x": 549.9628253598642,
+          "y": 193.35434335362885
+        },
+        "width": 161.05074886478457,
+        "height": 43.37064373941177
+      },
+      "s": {
+        "shape": "rect",
+        "opacity": 1,
+        "shape.background": "rgb(52,144,181)",
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 770,
+      "p": {
+        "position": {
+          "x": 550.6948742183396,
+          "y": 193.08988820887868
+        },
+        "width": 158.6105860031966,
+        "height": 41.783912870896636
+      },
+      "s": {
+        "text": "温湿度指标",
+        "type": "text",
+        "text.align": "center",
+        "text.color": "rgb(252,252,252)",
+        "opacity": 1
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 771,
+      "p": {
+        "position": {
+          "x": 549.0175090923289,
+          "y": 255.60519546305017
+        },
+        "width": 315.9649818153423,
+        "height": 31.655280826875536
+      },
+      "s": {
+        "shape": "rect",
+        "opacity": 1,
+        "shape.background": "rgb(53,145,181)",
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 772,
+      "p": {
+        "position": {
+          "x": 549.0175090923289,
+          "y": 299.4631922549342
+        },
+        "width": 315.9649818153423,
+        "height": 31.655280826875536
+      },
+      "s": {
+        "shape": "rect",
+        "opacity": 1,
+        "shape.background": "rgb(52,144,181)",
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 773,
+      "p": {
+        "position": {
+          "x": 549.2737261927956,
+          "y": 362.2108422434273
+        },
+        "width": 315.4525476144089,
+        "height": 31.655280826875536
+      },
+      "s": {
+        "shape": "rect",
+        "opacity": 1,
+        "shape.background": "rgb(52,144,181)",
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 774,
+      "p": {
+        "position": {
+          "x": 549.0175090923289,
+          "y": 406.6619741456842
+        },
+        "width": 315.96498181534236,
+        "height": 31.655280826875536
+      },
+      "s": {
+        "shape": "rect",
+        "opacity": 1,
+        "shape.background": "rgb(52,144,181)",
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 775,
+      "p": {
+        "position": {
+          "x": 549.2737261927955,
+          "y": 255.28973825466832
+        },
+        "width": 315.4525476144089,
+        "height": 32.21063663085585
+      },
+      "s": {
+        "text": "温度 ℃",
+        "type": "text",
+        "text.align": "center",
+        "text.color": "rgb(255,252,252)",
+        "opacity": 1
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 776,
+      "p": {
+        "tag": "temperature",
+        "position": {
+          "x": 549.0175090923286,
+          "y": 299.1477350465511
+        },
+        "anchor": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "width": 315.9649818153428,
+        "height": 32.21063663085585
+      },
+      "s": {
+        "text": "32",
+        "type": "text",
+        "text.align": "center",
+        "text.color": "rgb(255,252,252)",
+        "opacity": 1,
+        "pixelPerfect": false
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 777,
+      "p": {
+        "position": {
+          "x": 548.0175090923286,
+          "y": 361.93316434143713
+        },
+        "width": 313.9649818153428,
+        "height": 32.21063663085585
+      },
+      "s": {
+        "text": "湿度 %",
+        "type": "text",
+        "text.align": "center",
+        "text.color": "rgb(255,252,252)",
+        "opacity": 1
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 778,
+      "p": {
+        "tag": "humidity",
+        "position": {
+          "x": 549.2737261927955,
+          "y": 406.3465169372994
+        },
+        "anchor": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "width": 315.4525476144089,
+        "height": 32.21063663085585
+      },
+      "s": {
+        "text": "40",
+        "type": "text",
+        "text.align": "center",
+        "text.color": "rgb(255,252,252)",
+        "opacity": 1,
+        "pixelPerfect": false
+      }
+    }
+  ]
+}

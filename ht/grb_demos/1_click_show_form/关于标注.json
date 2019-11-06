@@ -1,0 +1,34 @@
+{
+  "v": "6.2.1",
+  "p": {
+    "autoAdjustIndex": true,
+    "hierarchicalRendering": true
+  },
+  "a": {},
+  "d": [
+    {
+      "c": "ht.Node",
+      "i": 28146,
+      "p": {
+        "displayName": "bg",
+        "image": "symbols/grb_symbols/1_click_form/bg.json",
+        "position": {
+          "x": 259,
+          "y": 184
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 28157,
+      "p": {
+        "displayName": "标注",
+        "image": "symbols/grb_symbols/1_click_form/标注.json",
+        "position": {
+          "x": 444,
+          "y": 356
+        }
+      }
+    }
+  ]
+}

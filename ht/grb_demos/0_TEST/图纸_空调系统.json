@@ -1,0 +1,313 @@
+{
+  "v": "6.2.1",
+  "p": {
+    "autoAdjustIndex": true,
+    "hierarchicalRendering": true
+  },
+  "a": {},
+  "d": [
+    {
+      "c": "ht.Node",
+      "i": 2349,
+      "p": {
+        "displayName": "背景图片",
+        "tag": "backgroudPicture",
+        "image": "../../../assets/0_TEST/assert_air_condition_machine.jpg",
+        "position": {
+          "x": 801.2816,
+          "y": 477.26448
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 2350,
+      "p": {
+        "displayName": "开关",
+        "tag": "swith_on_off",
+        "position": {
+          "x": 777.7265,
+          "y": 105.34278
+        },
+        "width": 8.48043,
+        "height": 157.99854
+      },
+      "s": {
+        "shape": "rect",
+        "shape.background": "#D8D8D8",
+        "shape.border.width": 1,
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 2351,
+      "p": {
+        "displayName": "风扇1",
+        "tag": "fan1",
+        "image": "../../../symbols/水利/fan.json",
+        "position": {
+          "x": 619.9879,
+          "y": 248.55371
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 2352,
+      "p": {
+        "displayName": "风扇2",
+        "tag": "fan2",
+        "image": "../../../symbols/水利/fan.json",
+        "position": {
+          "x": 1336.91543,
+          "y": 590.86887
+        },
+        "anchor": {
+          "x": 1.34372,
+          "y": 0.30656
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 2353,
+      "p": {
+        "displayName": "标注",
+        "image": "../../../symbols/grb_symbols/1_click_form/标注.json",
+        "position": {
+          "x": 1466.78317,
+          "y": 525.91897
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 2354,
+      "p": {
+        "displayName": "grb_温度计图标",
+        "tag":"tag_temputer",
+        "image": "../../../symbols/grb_symbols/grb_温度计图标.json",
+        "position": {
+          "x": 1342.54545,
+          "y": 110.97654
+        }
+      },
+      "a": {
+        "pb_value": 0.8
+      }
+    },
+    {
+      "c": "ht.Block",
+      "i": 10569,
+      "p": {
+        "displayName": "块",
+        "tag": "dialog",
+        "position": {
+          "x": 1300,
+          "y": 800
+        },
+        "anchor": {
+          "x": 0,
+          "y": 0.22238
+        },
+        "width": 241.5,
+        "height": 303.21843,
+        "clickThroughEnabled": true
+      },
+      "s": {
+        "2d.visible": false,
+        "pixelPerfect": false,
+        "select.width": 0,
+        "2d.movable": false
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 10570,
+      "p": {
+        "displayName": "bg",
+        "parent": {
+          "__i": 10569
+        },
+        "image": "bg.json",
+        "position": {
+          "x": 1420.75,
+          "y": 885.78871
+        },
+        "width": 241.5,
+        "height": 300
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 10571,
+      "p": {
+        "parent": {
+          "__i": 10569
+        },
+        "tag": "sensorName",
+        "dataBindings": {
+          "s": {}
+        },
+        "position": {
+          "x": 1426.08879,
+          "y": 762.02031
+        },
+        "scale": {
+          "x": 1.5,
+          "y": 1.5
+        },
+        "width": 150.7123,
+        "height": 39.2667
+      },
+      "s": {
+        "text": "设备状态信息",
+        "text.align": "center",
+        "text.color": "#F8E81C"
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 10572,
+      "p": {
+        "parent": {
+          "__i": 10569
+        },
+        "position": {
+          "x": 1428.90229,
+          "y": 816.76238
+        },
+        "scale": {
+          "x": 1.5,
+          "y": 1.5
+        },
+        "width": 136.38388,
+        "height": 39.2667
+      },
+      "s": {
+        "text": "室内温度",
+        "text.color": "#BD0FE1"
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 10573,
+      "p": {
+        "parent": {
+          "__i": 10569
+        },
+        "tag": "waterDeep",
+        "position": {
+          "x": 1415.57808,
+          "y": 816.76238
+        },
+        "scale": {
+          "x": 1.5,
+          "y": 1.5
+        },
+        "width": 37.65335,
+        "height": 39.2667
+      },
+      "s": {
+        "text": "25",
+        "text.align": "center",
+        "text.color": "#FFFFFF"
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 10574,
+      "p": {
+        "parent": {
+          "__i": 10569
+        },
+        "position": {
+          "x": 1473.24727,
+          "y": 816.76238
+        },
+        "scale": {
+          "x": 1.5,
+          "y": 1.5
+        },
+        "width": 47.69391,
+        "height": 39.2667
+      },
+      "s": {
+        "text": "摄氏度",
+        "text.color": "#BD0FE1"
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 10633,
+      "p": {
+        "parent": {
+          "__i": 10569
+        },
+        "position": {
+          "x": 1428.90229,
+          "y": 900
+        },
+        "scale": {
+          "x": 1.5,
+          "y": 1.5
+        },
+        "width": 136.38388,
+        "height": 39.2667
+      },
+      "s": {
+        "text": "室外温度",
+        "text.color": "#7ED321"
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 10634,
+      "p": {
+        "parent": {
+          "__i": 10569
+        },
+        "tag": "waterDeep",
+        "position": {
+          "x": 1415.57808,
+          "y": 900
+        },
+        "scale": {
+          "x": 1.5,
+          "y": 1.5
+        },
+        "width": 37.65335,
+        "height": 39.2667
+      },
+      "s": {
+        "text": "30",
+        "text.align": "center",
+        "text.color": "#FFFFFF"
+      }
+    },
+    {
+      "c": "ht.Text",
+      "i": 10635,
+      "p": {
+        "parent": {
+          "__i": 10569
+        },
+        "position": {
+          "x": 1478.24727,
+          "y": 900
+        },
+        "scale": {
+          "x": 1.5,
+          "y": 1.5
+        },
+        "width": 47.69391,
+        "height": 39.2667
+      },
+      "s": {
+        "text": "摄氏度",
+        "text.color": "#B8E986"
+      }
+    }
+  ]
+}

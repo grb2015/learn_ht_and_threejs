@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!-- http://www.hightopo.com/demo/water-level-monitor/ -->
+<html>
+<head>
+    <title>Water Level Monitor</title>
+    <meta charset="UTF-8"> 
+    <style>
+	*{
+	    padding: 0px;
+	    margin: 0px;
+	}
+    </style>
+
+</head>
+<body>
+    <script src="../ht.js"></script>
+<!-- <script src="../../../../htforwebold/lib/core/ht.js"></script> -->
+<script>
+(function(){
+
+    var formatDate  =   function(date, formatStr) {    
+        var  str  =  formatStr;    
+        var  Week  =   ['日', '一', '二', '三', '四', '五', '六'];
+
+            
+        str = str.replace(/yyyy|YYYY/, date.getFullYear());    
+        str = str.replace(/yy|YY/, (date.getYear()  %  100) > 9 ? (date.getYear()  %  100).toString() : '0'  +  (date.getYear()  %  100));   
+
+            
+        str = str.replace(/MM/, date.getMonth() > 9 ? date.getMonth().toString() : '0'  +  date.getMonth());       
+        str = str.replace(/M/g, date.getMonth());
+
+            
+        str = str.replace(/w|W/g, Week[date.getDay()]);
+
+            
+        str = str.replace(/dd|DD/, date.getDate() > 9 ? date.getDate().toString() : '0'  +  date.getDate());       
+        str = str.replace(/d|D/g, date.getDate());
+
+            
+        str = str.replace(/hh|HH/, date.getHours() > 9 ? date.getHours().toString() : '0'  +  date.getHours());       
+        str = str.replace(/h|H/g, date.getHours());    
+        str = str.replace(/mm/, date.getMinutes() > 9 ? date.getMinutes().toString() : '0'  +  date.getMinutes());       
+        str = str.replace(/m/g, date.getMinutes());    
+        str = str.replace(/ss|SS/, date.getSeconds() > 9 ? date.getSeconds().toString() : '0'  +  date.getSeconds());       
+        str = str.replace(/s|S/g, date.getSeconds());
+        console.log("####str = ")
+        console.log(str)
+        return  str;
+    }
+
+    var hls = {};
+    hls.init = function(){
+        var dm = this.dm = new ht.DataModel(),
+            g2d = this.g2d  = window.gv= new ht.graph.GraphView(dm);
+
+        g2d.addToDOM();
+
+        var oldFunc = g2d.invalidateData;
+        this.g2d.invalidateData = function() {
+           oldFunc.apply(self.g2d, arguments);
+           this.redraw();
+        }
+
+        var self = this;
+
+        ht.Default.xhrLoad('./display.json', function(text) {
+            var json = ht.Default.parse(text);
+            dm.deserialize(json);
+
+            g2d.fitContent(1);
+
+            self.sensorHost = dm.getDataByTag('sensorHost');
+            self.waterDeep = dm.getDataByTag('waterDeep');
+            self.sensorName = dm.getDataByTag('sensorName');
+            console.log("[init ] self.sensorHost = ")
+            console.log(self.sensorHost )
+            console.log("[init ] self.waterDeep = ")
+            console.log(self.waterDeep )
+            console.log("[init ] self.sensorName = ")
+            console.log(self.sensorName )
+
+            self.addListener();
+        });
+    };
+
+    hls.addListener = function() {
+        console.log("[addListener ]  enter addListener ...")
+        var self = this;
+        var div = this.g2d.getView();
+
+        div.addEventListener('mousemove', function(e){
+            // console.log("[addListener ]  mousemove  e = ");
+            // console.log(e);
+            var node = self.g2d.getDataAt(e);  // step1 :获取node 
+                // console.log("[addListener ] node = ");
+                // console.log(node );
+            var history = self.dm.getDataByTag('history');  //
+            var dialog = self.dm.getDataByTag('dialog');
+                // console.log("[addListener ] history = ");
+                // console.log(history );
+                // console.log("[addListener ] dialog = ");
+                // console.log(dialog );
+            if(node){
+                console.log("node.getHost()  = " );
+                console.log(node.getHost())
+            }
+            console.log("[addListener ] node = ");
+            console.log(node );
+            if (node && node.getHost() === self.sensorHost) {
+                console.log("##############################show######################")
+                self.showDialog(e, node);
+            }
+            else if (node !== dialog && node !== history) {
+                console.log("### hide ###")
+                self.hideDialog();
+            }
+            else{
+                console.log("##### esle ###")
+            }
+        });
+
+        self.g2d.mi(function (e) {
+            console.log("[g2d.mi ] enter g2d.mi ...")
+
+            if(e.kind === 'clickData'){
+                console.log("[g2d.mi ] clickData ")
+
+                var history = self.dm.getDataByTag('history'),
+                    historyBtn = self.dm.getDataByTag('historyBtn'),
+                    dialog = self.dm.getDataByTag('dialog');
+
+                if (e.data.getTag() === 'dialog' && ht.Default.containsPoint(historyBtn.getRect(), self.g2d.getLogicalPoint(e.event))) {
+
+                    var visible = history.s('2d.visible');
+                    if (!visible) {
+                        var dr = dialog.getRect();
+                        history.p({
+                            x: dr.x + 267,
+                            y: dr.y
+                        })
+                    }
+                    history.s('2d.visible', !visible);
+                    history.setParent(visible ? null : dialog);
+                }
+            }
+            console.log("[g2d.mi ] exit g2d.mi ...")
+
+        });
+    }
+
+    hls.showDialog = function(e, node){
+        var self = this,
+            dialog = self.dm.getDataByTag('dialog'),
+            curr = node.s('label'),
+            old = self.sensorName.s('text');
+
+        dialog.p(node.p());
+        dialog.s('2d.visible', true);
+        if (curr !== old) {
+            self.sensorName.s('text', curr);
+            self.waterDeep.s('text', (Math.random() * 2).toFixed(2));
+            self.dm.getDataByTag('time').s('text', formatDate(new Date(), 'yyyy-MM-dd HH:mm:ss'))
+        }
+    }
+
+    hls.hideDialog = function(){
+        var self = this,
+            history = self.dm.getDataByTag('history'),
+            dialog = self.dm.getDataByTag('dialog');
+        if ( dialog.s('2d.visible')) {
+            dialog.s('2d.visible', false);
+            history.s('2d.visible', false);
+            history.setParent(null);
+        }
+    }
+
+    window.addEventListener('load', function(){
+        hls.init();
+    });
+})();
+</script>
+</body>
+</html>

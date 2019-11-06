@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Graph Display Input</title>
+        <meta charset="UTF-8">
+        
+        <script src='../ht.js'></script>
+
+        <script>
+            function init() {
+                dataModel = new ht.DataModel();
+                graphView = new ht.graph.GraphView(dataModel);
+                graphView.addToDOM();
+                currentInput = null; 
+
+                ht.Default.xhrLoad('./TemperatureIndex.json', function(text) {
+                    var json = ht.Default.parse(text);                    
+                    if(json.title) document.title = json.title;
+                    dataModel.deserialize(json);
+
+                    var clickableTags = {
+                        'temperature': true,
+                        'humidity': true
+                    }
+
+                    var changeProperties = {
+                        'zoom': true,
+                        'translateX': true,
+                        'translateY':true
+                    }
+
+                    graphView.setMovableFunc(function(){
+                        return false;
+                    });
+                   
+                    graphView.addInteractorListener(function(e){  // 双击事件会到这里
+                        console.log("##### [addInteractorListener] enter addInteractorListener")
+                        console.log("[addInteractorListener] e = ")
+                        console.log(e)
+
+                        if (e.kind !== 'doubleClickData') return;
+                        if (currentInput) removeInput();
+                        
+                        var data = e.data;  
+
+                        if (clickableTags[data.getTag()]){
+                            setTimeout(function(){
+                                console.log("[addInteractorListener] createInput ")
+                                createInput('input', data); // data这里是个node
+                            }, 0);
+                        }
+                        console.log("##### [addInteractorListener] exit addInteractorListener") 
+                    });
+
+                    graphView.mp(function(e) {
+                        if (changeProperties[e.property]) {
+                            var elements = document.getElementsByTagName('input');
+                            for (var i = 0; i < elements.length; i++) {
+                                layout(elements[i]);                                
+                            }
+                        }
+                    });
+
+                    graphView.getView().addEventListener('keydown', function(event){  // 这里是由于按了enter键才触发的
+                        console.log("### [addEventListener] enter keydown ")
+
+                        if(ht.Default.isEnter(event)){
+                            console.log("[addEventListener] key is enter")
+                            setText('input');
+                            removeInput();
+                        } else if(ht.Default.isEsc(event)){
+                            console.log("[addEventListener] key is esc")
+                            removeInput();
+                        }   
+                        console.log("### [addEventListener] exit keydown ")
+                    }, false);
+                });
+            }
+
+            function setText(tagName){
+                console.log("[setText] ,tagName = "+tagName)
+                var element = document.getElementsByTagName(tagName);
+                console.log("[setText] ,element = ")
+                console.log(element)
+                if(!element) return;
+                for (var i = 0; i < element.length; i++) {
+                    console.log("[setText] ,element[i].value =  "+element[i].value)
+                    var value = (element[i].value) ? element[i].value : 32 ;
+                    element[i].bindingNode.s('text', value);
+                }
+                console.log("exit setText ")
+            }
+            
+            function createInput(tagName,node){
+                console.log(" [createInput] tagName = ")
+                console.log(tagName)
+                console.log(" [createInput] node  = ")
+                console.log(node)
+
+                if (currentInput) {
+                    removeInput(graphView, currentInput);
+                    return;
+                } else {                    
+                    var element = document.createElement(tagName);    
+                    console.log(" [createInput] element = ")
+                    console.log(element)
+                    graphView.getView().appendChild(element);
+                    element.bindingNode = node;
+                    ht.Default.setFocus(element);
+                    currentInput = element;   // 这里的element携带了新输入的值，在
+                    layout(currentInput);
+                    return currentInput;
+                }
+            }
+
+            function layout(element){
+                var rect = element.bindingNode.getRect();
+                var zoom = graphView.getZoom();
+                var tx = graphView.tx();
+                var ty = graphView.ty();
+                rect.x *= zoom;
+                rect.y *= zoom;
+                rect.width *= zoom;
+                rect.height *= zoom;
+                var x = tx + rect.x;
+                var y = ty + rect.y;
+
+                element.style.position = 'absolute';
+                element.style.width = rect.width + 'px';
+                element.style.height = rect.height + 'px';
+                element.style.top = y + 'px';
+                element.style.left = x + 'px';
+                element.style.background = '#fff';
+                element.style.color = '#000';
+                element.style.textAlign = 'center';
+            }
+
+            function removeInput(){
+                if(!currentInput) return;
+                graphView.getView().removeChild(currentInput);
+                currentInput = null;
+            }                           
+        </script>
+    </head>
+    <body onload='init()'>      
+    </body>
+</html> 

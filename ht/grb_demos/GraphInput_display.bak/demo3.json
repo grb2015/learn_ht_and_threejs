@@ -1,0 +1,302 @@
+{
+  "v": "6.0.8",
+  "p": {
+    "autoAdjustIndex": true,
+    "hierarchicalRendering": true
+  },
+  "a": {
+    "previewURL": "display-metro-demo3.html"
+  },
+  "d": [
+    {
+      "c": "ht.Node",
+      "i": 20041,
+      "p": {
+        "image": "symbols/demo/metro/subway-open.json",
+        "position": {
+          "x": 404.30322,
+          "y": 299
+        }
+      },
+      "s": {
+        "2d.selectable": false
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20042,
+      "p": {
+        "tag": "door1",
+        "image": "symbols/demo/metro/door-r.json",
+        "position": {
+          "x": 158.18872,
+          "y": 323.53707
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20043,
+      "p": {
+        "tag": "door2",
+        "image": "symbols/demo/metro/door-l.json",
+        "position": {
+          "x": 180.18872,
+          "y": 323.53707
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20044,
+      "p": {
+        "tag": "door3",
+        "image": "symbols/demo/metro/door-r.json",
+        "position": {
+          "x": 246.59892,
+          "y": 323.53707
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20045,
+      "p": {
+        "tag": "door4",
+        "image": "symbols/demo/metro/door-l.json",
+        "position": {
+          "x": 296.32163,
+          "y": 323.53707
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20046,
+      "p": {
+        "image": "symbols/demo/metro/door-r.json",
+        "position": {
+          "x": 514.0897,
+          "y": 323.53707
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20047,
+      "p": {
+        "image": "symbols/demo/metro/door-l.json",
+        "position": {
+          "x": 565.79368,
+          "y": 323.53707
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20048,
+      "p": {
+        "image": "symbols/demo/metro/door-r.json",
+        "position": {
+          "x": 614.412,
+          "y": 323.53707
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20049,
+      "p": {
+        "image": "symbols/demo/metro/door-l.json",
+        "position": {
+          "x": 664.21998,
+          "y": 323.53707
+        }
+      }
+    },
+    {
+      "c": "ht.Block",
+      "i": 20050,
+      "p": {
+        "displayName": "标志3",
+        "position": {
+          "x": 169.18872,
+          "y": 303.91302
+        },
+        "width": 42.70722,
+        "height": 39.2481
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20051,
+      "p": {
+        "parent": {
+          "__i": 20050
+        },
+        "tag": "redAlarm",
+        "position": {
+          "x": 169.18872,
+          "y": 303.91302
+        },
+        "width": 42.70722,
+        "height": 39.2481
+      },
+      "s": {
+        "shape": "triangle",
+        "opacity": 1,
+        "shape.background": "rgb(255,64,64)",
+        "shape.border.color": "#FF3F40",
+        "shape.border.cap": "round",
+        "shape.dash.pattern": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "c": "ht.Shape",
+      "i": 20052,
+      "p": {
+        "parent": {
+          "__i": 20050
+        },
+        "position": {
+          "x": 169.18872,
+          "y": 303.74783
+        },
+        "width": 7.77308,
+        "height": 15.14673,
+        "segments": {
+          "__a": []
+        },
+        "points": {
+          "__a": [
+            {
+              "x": 165.30218,
+              "y": 296.17446
+            },
+            {
+              "x": 173.07526,
+              "y": 296.17446
+            },
+            {
+              "x": 171.06151,
+              "y": 311.3212
+            },
+            {
+              "x": 167.31593,
+              "y": 311.3212
+            },
+            {
+              "x": 165.34246,
+              "y": 296.20739
+            }
+          ]
+        },
+        "closePath": true
+      },
+      "s": {
+        "type": "shape",
+        "opacity": 1,
+        "shape.background": "rgb(255,255,255)",
+        "shape.border.width": 1,
+        "shape.border.color": "rgb(255,255,255)",
+        "shape.dash.pattern": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20053,
+      "p": {
+        "parent": {
+          "__i": 20050
+        },
+        "position": {
+          "x": 169.18872,
+          "y": 317.93451
+        },
+        "width": 10.7467,
+        "height": 7.93391
+      },
+      "s": {
+        "shape": "circle",
+        "opacity": 1,
+        "shape.background": "rgb(255,255,255)",
+        "shape.border.color": "#979797",
+        "shape.dash.pattern": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "c": "ht.Block",
+      "i": 20054,
+      "p": {
+        "displayName": "标志2",
+        "position": {
+          "x": 267.95253,
+          "y": 313.96756
+        },
+        "width": 42.70722,
+        "height": 39.2481
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20055,
+      "p": {
+        "parent": {
+          "__i": 20054
+        },
+        "tag": "yellowAlarm",
+        "position": {
+          "x": 267.95253,
+          "y": 313.96756
+        },
+        "width": 42.70722,
+        "height": 39.2481
+      },
+      "s": {
+        "shape": "circle",
+        "opacity": 1,
+        "shape.background": "rgb(255,208,20)",
+        "shape.border.color": "#FF3F40",
+        "shape.border.cap": "round",
+        "shape.dash.pattern": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 20056,
+      "p": {
+        "parent": {
+          "__i": 20054
+        },
+        "position": {
+          "x": 267.95253,
+          "y": 313.96756
+        },
+        "width": 24.14584,
+        "height": 7.14289
+      },
+      "s": {
+        "shape": "rect",
+        "opacity": 1,
+        "shape.background": "rgb(255,255,255)",
+        "shape.border.color": "#979797",
+        "shape.dash.pattern": [
+          16,
+          16
+        ]
+      }
+    }
+  ]
+}

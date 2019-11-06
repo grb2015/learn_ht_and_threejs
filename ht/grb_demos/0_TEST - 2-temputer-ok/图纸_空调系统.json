@@ -1,0 +1,87 @@
+{
+  "v": "6.2.1",
+  "p": {
+    "autoAdjustIndex": true,
+    "hierarchicalRendering": true
+  },
+  "a": {},
+  "d": [
+    {
+      "c": "ht.Node",
+      "i": 2318,
+      "p": {
+        "displayName": "背景图片",
+        "tag": "backgroudPicture",
+        "image": "../../../assets/0_TEST/assert_air_condition_machine.jpg",
+        "position": {
+          "x": 1614.68646,
+          "y": -291.44629
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 2319,
+      "p": {
+        "displayName": "开关",
+        "tag": "swith_on_off",
+        "position": {
+          "x": 1583.56289,
+          "y": -668.0002
+        },
+        "width": 8.48043,
+        "height": 157.99854
+      },
+      "s": {
+        "shape": "rect",
+        "shape.background": "#D8D8D8",
+        "shape.border.width": 1,
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 2320,
+      "p": {
+        "displayName": "风扇1",
+        "tag": "fan1",
+        "image": "../../../symbols/水利/fan.json",
+        "position": {
+          "x": 1421.49183,
+          "y": -516.12437
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 2321,
+      "p": {
+        "displayName": "风扇2",
+        "tag": "fan2",
+        "image": "../../../symbols/水利/fan.json",
+        "position": {
+          "x": 2049.7146,
+          "y": -160.96345
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 32289,
+      "p": {
+        "displayName": "grb_温度计图标",
+        "tag": "tag_temputer",
+        "image": "../../../symbols/grb_symbols/grb_温度计图标.json",
+        "position": {
+          "x": 2136.56721,
+          "y": -697.43665
+        },
+        "width": 27.32981,
+        "height": 182.13984
+      },
+      "a": {
+        "pb_value": 0.1
+      }
+    }
+  ]
+}

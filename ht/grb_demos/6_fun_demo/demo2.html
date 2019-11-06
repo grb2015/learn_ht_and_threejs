@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Metro Demo 2</title>
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="favicon.ico" />
+        <style>
+            html, body {
+                padding: 0px;
+                margin: 0px;
+            }
+        </style>
+
+        <script src='../ht.js'></script>
+
+        <script>
+            function init() {
+                dataModel = new ht.DataModel();
+                graphView = new ht.graph.GraphView(dataModel);
+                graphView.setSelectableFunc(function(data) {
+                    return false;
+                });
+                graphView.addToDOM();
+
+                ht.Default.xhrLoad('demo2.json', function(text) {
+                    var json = ht.Default.parse(text);
+                    if(json.title) document.title = json.title;
+                    dataModel.deserialize(json);
+                    graphView.fitContent(true);
+
+                    window.addEventListener('resize', function() {
+                        graphView.fitContent();
+                    }, false);
+
+                    var fan1 = dataModel.getDataByTag('fan1');
+                    var fan2 = dataModel.getDataByTag('fan2');
+                    var camera1 = dataModel.getDataByTag('camera1');
+                    var camera2 = dataModel.getDataByTag('camera2');
+                    var camera3 = dataModel.getDataByTag('camera3');
+                    var redAlarm = dataModel.getDataByTag('redAlarm');
+                    var yellowAlarm = dataModel.getDataByTag('yellowAlarm');
+
+                    var stairIndex = 8;
+                    var stairTime = new Date().getTime();
+                    var lastTime = new Date().getTime();
+                    setInterval(function(){
+
+                        // var time = new Date().getTime();
+                        // var deltaTime = time - lastTime;
+                        // var deltaRotation = deltaTime * Math.PI / 180 * 0.1;
+                        // lastTime = time;
+
+                        var deltaRotation = Math.PI / 100;
+                        fan1.setRotation(fan1.getRotation() + deltaRotation*3);
+                        fan2.setRotation(fan2.getRotation() + deltaRotation*3);
+                        // camera1.setRotation(camera1.getRotation() + deltaRotation/3);
+                        // camera2.setRotation(camera2.getRotation() + deltaRotation/3);
+                        // camera3.setRotation(camera3.getRotation() + deltaRotation/3);
+
+                        // if (time - stairTime > 500) {
+                        //     stairIndex--;
+                        //     if (stairIndex < 0) {
+                        //         stairIndex = 8;
+                        //     }
+                        //     stairTime = time;
+                        // }
+
+                        /*for (var i = 0; i < 8; i++) {
+                            var color = stairIndex === i ? '#F6A623' : '#CFCFCF';
+                            dataModel.getDataByTag('stair_1_' + i).s('shape.border.color', color);
+                            dataModel.getDataByTag('stair_2_' + i).s('shape.border.color', color);
+                        }*/
+
+                        // if (new Date().getSeconds() % 2 === 1) {
+                        //     yellowAlarm.s('shape.background', null);
+                        //     redAlarm.s('shape.background', null);
+                        // }
+                        // else {
+                        //     yellowAlarm.s('shape.background', 'yellow');
+                        //     redAlarm.s('shape.background', 'red');
+                        // }
+                    }, 5);
+
+                });
+            }
+        </script>
+    </head>
+    <body onload='setTimeout(init, 300)'>
+    </body>
+</html>

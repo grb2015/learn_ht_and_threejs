@@ -1,0 +1,60 @@
+{
+  "dataBindings": [
+    {
+      "attr": "temputureVal",
+      "valueType": "String",
+      "defaultValue": "11",
+      "name": "name_temputer"
+    },
+    {
+      "attr": "wendVal",
+      "valueType": "String",
+      "defaultValue": "99",
+      "name": "name_wend"
+    }
+  ],
+  "width": 1000,
+  "height": 500,
+  "comps": [
+    {
+      "type": "image",
+      "name": "air_condition_machine.jpg",
+      "displayName": "air_condition_machine",
+      "rect": [
+        0,
+        0,
+        1000,
+        500
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "func": "attr@TEMP",
+        "value": "温度文本框"
+      },
+      "displayName": "文本",
+      "anchorX": 0.53147,
+      "anchorY": 0.4528,
+      "rect": [
+        837.99546,
+        401.38427,
+        50,
+        50
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "func": "attr@WEND",
+        "value": "风力文本框"
+      },
+      "rect": [
+        837.99546,
+        360.82451,
+        50,
+        50
+      ]
+    }
+  ]
+}

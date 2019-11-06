@@ -1,0 +1,50 @@
+{
+  "v": "6.2.1",
+  "p": {
+    "autoAdjustIndex": true,
+    "hierarchicalRendering": true
+  },
+  "a": {},
+  "d": [
+    {
+      "c": "ht.Node",
+      "i": 2238,
+      "p": {
+        "displayName": "背景图片",
+        "tag": "backgroud_picture",
+        "image": "sysmbol_airCondition.json",
+        "position": {
+          "x": 640,
+          "y": 407
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 2239,
+      "p": {
+        "displayName": "启动开关",
+        "tag": "swith_on_off",
+        "dataBindings": {
+          "p": {
+            "displayName": {
+              "id": "switch_on_off"
+            }
+          }
+        },
+        "position": {
+          "x": 623.21331,
+          "y": 237.42663
+        },
+        "width": 4,
+        "height": 62
+      },
+      "s": {
+        "shape": "rect",
+        "shape.background": "#D8D8D8",
+        "shape.border.width": 1,
+        "shape.border.color": "#979797"
+      }
+    }
+  ]
+}

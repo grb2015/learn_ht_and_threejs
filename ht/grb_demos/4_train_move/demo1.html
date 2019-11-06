@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Metro Demo 1</title>
+        <meta charset="UTF-8"> 
+        <link rel="shortcut icon" href="favicon.ico" /> 
+        <style>
+            html, body {
+                padding: 0px;
+                margin: 0px;
+            }            
+        </style>     
+                
+        <script src='../ht.js'></script>          
+
+        <script>
+            function init() {                
+                dataModel = new ht.DataModel();
+                graphView = new ht.graph.GraphView(dataModel);
+                graphView.setSelectableFunc(function(data) { 
+                    return false; 
+                });
+                graphView.addToDOM(); 
+
+                ht.Default.xhrLoad('demo1.json', function(text) {
+                    const json = ht.Default.parse(text);                    
+                    if(json.title) document.title = json.title;
+                    dataModel.deserialize(json);
+                    graphView.fitContent(true); 
+
+                    window.addEventListener('resize', function() {
+                        graphView.fitContent();
+                    }, false);
+
+                    var redLight = dataModel.getDataByTag('redLight');
+                    var redAlarm = dataModel.getDataByTag('redAlarm');
+                    var train = dataModel.getDataByTag('train');
+                    var step = -3;
+                    setInterval(function(){
+                        train.setX(train.getX() + step);
+                        if (step < 0 && train.getX() < -1800) {
+                            step = -step;
+                        }
+                        if (step > 0 && train.getX() > 600) {
+                            step = -step;
+                        }
+                        
+                        if (new Date().getSeconds() % 2 === 1) {
+                            redLight.s('shape.background', null);
+                            redAlarm.s('shape.background', null);
+                        }
+                        else {
+                            redLight.s('shape.background', 'red');
+                            redAlarm.s('shape.background', 'red');
+                        }
+                    }, 5);
+
+                });
+            }
+        </script>
+    </head>
+    <body onload='setTimeout(init, 300)'>   
+    </body>
+</html>

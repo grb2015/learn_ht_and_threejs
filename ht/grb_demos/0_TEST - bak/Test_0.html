@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Metro Demo 1</title>
+        <meta charset="UTF-8"> 
+        <link rel="shortcut icon" href="favicon.ico" /> 
+        <style>
+            html, body {
+                padding: 0px;
+                margin: 0px;
+            }            
+        </style>     
+                
+        <script src='../ht.js'></script>          
+
+        <script>
+            function init() {                
+                dataModel = new ht.DataModel();  // step1 
+                graphView = new ht.graph.GraphView(dataModel);
+                graphView.setSelectableFunc(function(data) { 
+                    return false; 
+                });
+                graphView.addToDOM(); 
+
+                ht.Default.xhrLoad('图纸_空调系统.json', function(text) {
+                    const json = ht.Default.parse(text);                    
+                    if(json.title) document.title = json.title;
+                    dataModel.deserialize(json);
+                    graphView.fitContent(true); 
+
+                    window.addEventListener('resize', function() {
+                        graphView.fitContent();
+                    }, false);
+                    window.addEventListener('mousemove', function(e) {
+                        console.log("############### init mousemove ###############");
+                        console.log("############### e=  ###############");
+                        console.log(e);
+
+                        var node = graphView.getDataAt(e); 
+                        var history = dataModel.getDataByTag('history'); 
+                        var dialog = dataModel.getDataByTag('dialog');
+                        if(node){
+                            console.log("node.getHost()  = " );
+                            console.log(node.getHost())
+                        }
+                        console.log(" node = ");
+                        console.log(node );
+                        if (node && node.getHost() === self.sensorHost) {
+                            console.log("##############################show######################")
+                            self.showDialog(e, node);
+                        }
+                        else if (node !== dialog && node !== history) {
+                            console.log("### hide ###")
+                            self.hideDialog();
+                        }
+                        else{
+                            console.log("##### esle ###")
+                        }
+                    }, false);
+
+                    var swithLine = dataModel.getDataByTag('swith_on_off');  // 代表开关的棒
+                    origan_x = swithLine.getX()
+                    console.log("### origan_x = "+origan_x)
+                    
+                    // TODO 做一个开关(checkbox) 而不是开机后自动打开
+                    var step = 0.2;
+
+                    var fan1 = dataModel.getDataByTag('fan1');
+                    var fan2 = dataModel.getDataByTag('fan2');
+                    var temputerFlag = 0;
+                    setInterval(function(){
+
+                        /*************************功能1  开关平移**************************/
+                        if(swithLine.getX() < origan_x+120){
+                            swithLine.setX(swithLine.getX() + step);
+                        }
+
+                        // if (step < 0 && swithLine.getX() <= origan_x) {
+                        //     step = -step;
+                        // }
+                        // if (step > 0 && swithLine.getX() > origan_x+60) {
+                        //     step = -step;
+                        // }
+
+                        /*************************功能2  风扇旋转**************************/
+                        
+                        var deltaRotation = Math.PI / 100;
+                        fan1.setRotation(fan1.getRotation() + deltaRotation);
+                        fan2.setRotation(fan2.getRotation() + deltaRotation);
+
+
+                        /*************************功能3  温度计液面控制 **************************/
+                        var temputure_node = dataModel.getDataByTag('tag_temputer'); 
+                        // console.log("step 3 temputure_node = ")
+                        // console.log(temputure_node)
+                        // console.log("#### temputerFlag = "+temputerFlag)
+                        if(temputerFlag < 1){
+                            temputerFlag = temputerFlag +0.001
+                        }
+                        else{
+                            temputerFlag = 0;
+                        }
+                        temputure_node.a("pb_value",temputerFlag);
+                        /*************************功能4  鼠标划过显示标签 **************************/
+
+                        //graphView.getView().addEventListener('mousemove', function(e){  // 这里是由于按了enter键才触发的
+                            // var node = graphView.getDataAt(e); 
+                            // var history = dataModel.getDataByTag('history'); 
+                            // var dialog = dataModel.getDataByTag('dialog');
+                            // if(node){
+                            //     console.log("node.getHost()  = " );
+                            //     console.log(node.getHost())
+                            // }
+                            // console.log(" node = ");
+                            // console.log(node );
+                            // if (node && node.getHost() === self.sensorHost) {
+                            //     console.log("##############################show######################")
+                            //     self.showDialog(e, node);
+                            // }
+                            // else if (node !== dialog && node !== history) {
+                            //     console.log("### hide ###")
+                            //     self.hideDialog();
+                            // }
+                            // else{
+                            //     console.log("##### esle ###")
+                            // }
+
+                       // }, false);
+                
+                    }, 5);
+                    // 
+                    // while(swithLine.getX() < origan_x+60){
+                    //     swithLine.setX(swithLine.getX() + step);
+                    // }
+
+                    
+                });
+            }
+        </script>
+    </head>
+    <body onload='setTimeout(init, 300)'>   
+    </body>
+</html>

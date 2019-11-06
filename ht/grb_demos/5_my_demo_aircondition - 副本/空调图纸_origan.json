@@ -1,0 +1,22 @@
+{
+  "v": "6.2.1",
+  "p": {
+    "autoAdjustIndex": true,
+    "hierarchicalRendering": true
+  },
+  "a": {},
+  "d": [
+    {
+      "c": "ht.Node",
+      "i": 15528,
+      "p": {
+        "displayName": "airCondition",
+        "image": "symbols/airCondition.json",
+        "position": {
+          "x": 640,
+          "y": 407
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "v": "6.2.1",
+  "p": {
+    "autoAdjustIndex": true,
+    "hierarchicalRendering": true
+  },
+  "a": {},
+  "d": [
+    {
+      "c": "ht.Node",
+      "i": 17716,
+      "p": {
+        "displayName": "背景图片",
+        "tag": "backgroudPicture",
+        "image": "../../../assets/0_TEST/assert_air_condition_machine.jpg",
+        "position": {
+          "x": 814.28746,
+          "y": 480.07893
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 17717,
+      "p": {
+        "displayName": "开关",
+        "tag": "swith_on_off",
+        "position": {
+          "x": 777.7265,
+          "y": 105.34278
+        },
+        "width": 8.48043,
+        "height": 157.99854
+      },
+      "s": {
+        "shape": "rect",
+        "shape.background": "#D8D8D8",
+        "shape.border.width": 1,
+        "shape.border.color": "#979797"
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 17726,
+      "p": {
+        "displayName": "风扇1",
+        "tag": "fan1",
+        "image": "../../../symbols/水利/fan.json",
+        "position": {
+          "x": 619.9879,
+          "y": 248.55371
+        }
+      }
+    },
+    {
+      "c": "ht.Node",
+      "i": 17940,
+      "p": {
+        "displayName": "风扇2",
+        "tag": "fan2",
+        "image": "../../../symbols/水利/fan.json",
+        "position": {
+          "x": 1252.54312,
+          "y": 610.21331
+        }
+      }
+    }
+  ]
+}

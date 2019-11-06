@@ -1,0 +1,68 @@
+<html>
+    <!-- http://www.hightopo.com/demo/Oil_Tank/index.html -->
+
+    <head>
+        <meta charset="utf-8">
+        <script src="../ht.js"></script>
+        <script>
+            var gv = new ht.graph.GraphView();
+            gv.isMovable = function() { return false; };
+
+            var dm = gv.dm();
+
+            var potList = [];
+            var paList = []
+            ht.Default.xhrLoad('Oil tank2.json', function(json) {
+                dm.deserialize(json);
+
+                gv.fitContent(true);
+
+                dm.each(function(d) {
+                    if (d.getDisplayName() === 'pot'){
+                        console.log("######### d is   pot = ")
+                        console.log(d)
+                        potList.push(d);
+                    }
+                    if (d.getDisplayName() === 'pa_msg'){
+                        console.log("######### d is   pa_msg = ")
+                        console.log(d)
+                        paList.push(d);
+                    }
+                });
+
+                setInterval(randomPotValue, 1000);
+            });
+
+            var maxVolume = 20000;
+            var maxHeight = 22;
+            console.log("---------paList = ")
+            console.log(paList)
+            console.log("---------potList = ")
+            console.log(potList)
+            function randomPotValue() {
+                potList.forEach(function(p) {
+                    console.log("##### potList_i = ")
+                    console.log(p)
+                    var r = Math.random();
+                    var t = Math.random() * 30 + 10;
+                    p.a({
+                        'volume': (r * maxVolume).toFixed(1),
+                        'pb.value': r, // 控制进度条高度
+                        'height': (r * maxHeight).toFixed(1),
+                        'temperature': t.toFixed(1)
+                    });
+                });
+
+                paList.forEach(function(p) {
+                    var r = Math.random() * 0.001;
+                    p.a('value', r.toFixed(4));
+                });
+            }
+
+            window.addEventListener('load', function() {
+                gv.addToDOM();
+            });
+        </script>
+    </head>
+    <body></body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Metro Demo 1</title>
+        <meta charset="UTF-8"> 
+        <link rel="shortcut icon" href="favicon.ico" /> 
+        <style>
+            html, body {
+                padding: 0px;
+                margin: 0px;
+            }            
+        </style>     
+                
+        <script src='../ht.js'></script>          
+
+        <script>
+            function init() {                
+                dataModel = new ht.DataModel();
+                graphView = new ht.graph.GraphView(dataModel);
+                graphView.setSelectableFunc(function(data) { 
+                    return false; 
+                });
+                graphView.addToDOM(); 
+
+                ht.Default.xhrLoad('图纸_空调系统.json', function(text) {
+                    const json = ht.Default.parse(text);                    
+                    if(json.title) document.title = json.title;
+                    dataModel.deserialize(json);
+                    graphView.fitContent(true); 
+
+                    window.addEventListener('resize', function() {
+                        graphView.fitContent();
+                    }, false);
+
+                    var swithLine = dataModel.getDataByTag('swith_on_off');  // 代表开关的棒
+                    origan_x = swithLine.getX()
+                    console.log("### origan_x = "+origan_x)
+                    /*************************功能一 平移--------------------*/
+                    // TODO 做一个开关(checkbox) 而不是开机后自动打开
+                    var step = 0.2;
+                    setInterval(function(){
+                        if(swithLine.getX() < origan_x+120){
+                            swithLine.setX(swithLine.getX() + step);
+                        }
+
+                        // if (step < 0 && swithLine.getX() <= origan_x) {
+                        //     step = -step;
+                        // }
+                        // if (step > 0 && swithLine.getX() > origan_x+60) {
+                        //     step = -step;
+                        // }
+
+                    }, 5);
+                    // 
+                    // while(swithLine.getX() < origan_x+60){
+                    //     swithLine.setX(swithLine.getX() + step);
+                    // }
+                });
+            }
+        </script>
+    </head>
+    <body onload='setTimeout(init, 300)'>   
+    </body>
+</html>
