@@ -45,9 +45,11 @@
 
         // draw planets
         var planetsContext = planetsLayer.getContext();
-        planetsContext.drawImage(imageObj, 0, 0);
+        var imgX = 0
+        var imgY = 0
+        planetsContext.drawImage(imageObj, imgX, imgY,width,height); //要铺满全屏的话,要设置成window的宽和高
       };
-      imageObj.src = './planets.png';
+      imageObj.src = './all_machine.png';
     </script>
   </body>
 </html>
