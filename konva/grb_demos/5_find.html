@@ -37,12 +37,15 @@
         layer.add(circle);
         // then try to search
         // find by type
+        console.log("by type ")
         ccicle = layer.find('Circle'); // all circles
         console.log(ccicle);
         // find by id
+        console.log("by id ")
         fface = layer.findOne('#face');
         console.log(fface);
         // find by name (like css class)
+        console.log("by css red")
         let reddd = layer.find('.red');
         console.log(reddd);
         // add the shape to the layer
