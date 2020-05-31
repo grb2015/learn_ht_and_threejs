@@ -1,0 +1,74 @@
+<!--  ref : https://threejsfundamentals.org/threejs/lessons/threejs-transparency.html -->
+<!-- 在1_create_a_scene.html的基础上修改的--> 
+<html>
+	<head>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			/* canvas { width: 100%; height: 100% } */
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script>
+			//相机
+			var scene = new THREE.Scene();
+			const fov = 75;
+            const aspect = 2;  // the canvas default
+            const near = 0.1;
+            const far = 25;
+            const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+			camera.position.z = 5;  // 防止cube和摄像机重叠
+			//灯光
+			function addLight(...pos) {
+                const color = 0xFFFFFF;
+                const intensity = 1;  //强度
+                const light = new THREE.DirectionalLight(color, intensity);
+                light.position.set(...pos);
+                scene.add(light);
+            }
+            addLight(-1, 2, 4);
+            addLight( 1, -1, -2);
+
+			//渲染器
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+
+			//设置场景背景颜色为白色
+			scene.background = new THREE.Color('white');
+
+			// 构造几何体
+			var geometry = new THREE.BoxGeometry( 1, 1, 1 );  // new 一个几何体 (这里是Box)
+			console.log("color = ")
+			console.log(hsl(0 / 8, 1, .5) )
+			
+			var material = new THREE.MeshPhongMaterial({
+                // color: hsl(0 / 8, 1, .5) ,
+                color: hsl(7 / 8, 1, .5) ,
+                opacity: 0.2,
+                transparent: true,
+                });
+			var cube = new THREE.Mesh( geometry, material ); // 几何体 + 材质组成一个Mesh. 这里cube是Mesh对象！
+			scene.add( cube );
+
+
+			renderer.render( scene, camera );   // 一次渲染
+			var animate = function () {		// animate函数会周期的执行,所以这里还是重复渲染就成了动画
+				requestAnimationFrame( animate );
+
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+
+				renderer.render( scene, camera );
+			};
+
+			function hsl(h, s, l) {
+                return (new THREE.Color()).setHSL(h, s, l);
+            }
+
+			animate();
+		</script>
+	</body>
+</html>
