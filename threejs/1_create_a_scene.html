@@ -1,3 +1,14 @@
+<!-- 
+	0.主要有如下对象 
+			scene,
+			camera,
+			render,
+			document.body.appendChild( renderer.domElement );   // render需要加入到html的dom中
+			scene.add( mesh or line);
+			renderer.render( scene, camera ); //调用渲染，注意包含了scene和camera对象
+	1.弄清楚坐标系，x,y,z各是调节什么方向的
+	2.mesh or line需要加到scene里面。而camera不需要。在浏览器可通过this.scene / this.camera查看
+ -->
 <html>
 	<head>
 		<title>My first three.js app</title>
@@ -9,31 +20,42 @@
 	<body>
 		<script src="js/three.js"></script>
 		<script>
+			// step1 创建场景
 			var scene = new THREE.Scene();
+
+			// step2 设置相机  透视相机文档：https://threejs.org/docs/#api/zh/cameras/PerspectiveCamera
+			// 关于坐标系,z轴是调节垂直屏幕的方向,x轴调节左右,y轴调节上下
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-
+			camera.position.z = 5;  // 防止cube和摄像机重叠 z轴是调节垂直屏幕的方向
+			// camera.position.x = 5;  //    x轴调节左右
+			// // camera.position.y = 1;  //   y轴调节上下
+			
+			// step3 渲染器
 			var renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
+			renderer.setSize( window.innerWidth, window.innerHeight ); // 设置渲染范围？
+			document.body.appendChild( renderer.domElement );  // 将render的dom加入到页面中去
 
+			// step4 创建几何体和材质，并把他们组合在一个生成一个对象(Mesh或Line等)
 			var geometry = new THREE.BoxGeometry( 1, 1, 1 );  // new 一个几何体 (这里是Box)
 			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 			var cube = new THREE.Mesh( geometry, material ); // 几何体 + 材质组成一个Mesh. 这里cube是Mesh对象！
+			cube.position.x = 5   // x轴调节左右
+			cube.position.y = 3    //y调节上下
+			// step5 将对象加入场景中
 			scene.add( cube );
 
-			camera.position.z = 5;  // 防止cube和摄像机重叠
+			
 
 			//renderer.render( scene, camera );   // 一次渲染
-
+			
 			var animate = function () {		// animate函数会周期的执行,所以这里还是重复渲染就成了动画
 				requestAnimationFrame( animate );
 
 				cube.rotation.x += 0.01;
 				cube.rotation.y += 0.01;
 
-				renderer.render( scene, camera );
+				renderer.render( scene, camera ); // step6 进行渲染
 			};
-
 			animate();
 		</script>
 	</body>
