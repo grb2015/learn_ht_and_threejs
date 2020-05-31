@@ -17,8 +17,8 @@
 
 			// step2 设置相机
 			var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
-			camera.position.set( 0, 0, 100 );
-			camera.lookAt( 0, 0, 0 );
+			camera.position.set( 0, 0, 30 );
+			camera.lookAt( 0, 10, 0 ); // 感觉一般不需要了解这个,camera.lookAt( 0, 10, 0 )等价于camera.position.set( 0, 10, 30 );
 
 			// step3 渲染器
 			var renderer = new THREE.WebGLRenderer();
