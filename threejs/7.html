@@ -4,6 +4,7 @@
     <head>
         <meta charset="utf-8">
         <script src="js/three.js" type="text/javascript"></script>
+        <script src='js/threex.domevents.js'></script> 
         
     </head>
     <body>
@@ -11,7 +12,7 @@
      <script  type="text/javascript" >
 
         var scene,camera,render;
-        
+        var cube
         //导入字体，设定字体，这里的话，你们找对自己的字体路径，可能和我的不一样的！！下载的three.js包里面examples/fonts里面有字体
     
         init()
@@ -35,21 +36,33 @@
             document.body.appendChild(renderer.domElement);       
 
             			// step4 创建几何体和材质，并把他们组合在一个生成一个对象(Mesh或Line等)
-			var geometry = new THREE.BoxGeometry( 1, 1, 1 );  // new 一个几何体 (这里是Box)
+			var geometry = new THREE.BoxGeometry( 5, 5, 5 );  // new 一个几何体 (这里是Box)
 			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			var cube = new THREE.Mesh( geometry, material ); // 几何体 + 材质组成一个Mesh. 这里cube是Mesh对象！
+			cube = new THREE.Mesh( geometry, material ); // 几何体 + 材质组成一个Mesh. 这里cube是Mesh对象！
 			// cube.position.x = 5   // x轴调节左右
 			// cube.position.y = 3    //y调节上下
 			// step5 将对象加入场景中
+            cube.name = 'cube1'
 			scene.add( cube );
 
 
-            addText("HELLO",10,10,0)
-            addText("world",-3,3,0)
+            // addText("HELLO",10,10,0)
+            // addText("world",-3,3,0)
              
                 
         }
         animate();
+
+        //为几何体添加鼠标事件
+        var domEvents   = new THREEx.DomEvents(camera, renderer.domElement)
+        domEvents.addEventListener(cube, 'click', function(event){
+            console.log('you clicked on the mesh = ')
+            console.log(event.target)
+            console.log(event.target.position)
+            var position = event.target.position
+            addText(event.target.name,position.x,position.y+5,position.z)
+        }, false)
+
 
 
         function addText(content,x,y,z){
@@ -70,6 +83,7 @@
                 //3D文字材质
                 var m = new THREE.MeshBasicMaterial({color:0xff0000});
                 var mesh = new THREE.Mesh(g,m);
+                mesh.name = content
                 // 加入到场景中
                 console.log("####### snene  = ")
                 console.log(scene)    
