@@ -1,0 +1,309 @@
+<!-- 
+	brief	:	通过射线来监听事件
+	note	: 	OrbitControls.js来自jci.threejs
+	note	:	ref	: https://blog.csdn.net/zhulx_sz/article/details/79374129
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>示例 09.02 - 选择对象</title>
+	<script src="js/three.js"></script>
+	<script src="js/OrbitControls.js"></script>
+	<script src="js/stats.min.js"></script>
+	<script src="js/dat.gui.min.js"></script>
+	<script src="js/jquery-3.2.1.min.js"></script>
+    <style>
+        body {
+            /* 设置 margin 为 0，并且 overflow 为 hidden，来完成页面样式 */
+            margin: 0;
+            overflow: hidden;
+        }
+		/* 统计对象样式 */
+		#Stats-output {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+		}
+    </style>
+</head>
+<body>
+ 
+<!-- 用于 WebGL 输出的 Div -->
+<div id="webgl-output"></div>
+<!-- 用于统计 FPS 输出的 Div -->
+<div id="stats-output"></div>
+ 
+<!-- 运行 Three.js 示例的 Javascript 代码 -->
+<script type="text/javascript">
+ 
+	var scene;
+	var camera;
+	var render;
+	var webglRender;
+	//var canvasRender;
+	var controls;
+	var stats;
+	var guiParams;
+	
+	var ambientLight;
+	var spotLight;
+	var axesHelper;
+	//var cameraHelper;
+	
+	var raycaster = new THREE.Raycaster();
+	var mouse = new THREE.Vector2();
+	var highlightBox;
+	
+    $(function() {
+		initStats();
+		initRender();
+		initCamera();
+		initControls();
+		
+		scene = new THREE.Scene();
+		
+		//createAxesHelper();
+		createAmbientLight();
+		createSpotLight();
+		createGuiControls();
+		
+		// 加入地面
+		createGround()
+		// 创建网格
+		createMesh();
+		
+		createHighlightBox();
+		
+		renderScene();
+    });
+	
+	/** 初始化 stats 统计对象 */
+	function initStats() {
+		stats = new Stats();
+		stats.setMode(0); // 0 为监测 FPS；1 为监测渲染时间
+		$('#stats-output').append(stats.domElement);
+		return stats;
+	}
+	
+	/** 初始化渲染器 */
+	function initRender() {
+		webglRender = new THREE.WebGLRenderer( {antialias: true, alpha: true} ); // antialias 抗锯齿
+		webglRender.setSize(window.innerWidth, window.innerHeight);
+		webglRender.setClearColor(0xEEEEEE, 1.0); // 0xeeeeee
+		render = webglRender;
+		render.shadowMap.enabled = true; // 允许阴影投射
+		
+		$('#webgl-output')[0].appendChild(render.domElement);
+		window.addEventListener('resize', onWindowResize, false);
+		window.addEventListener('mousemove', onDocumentMouseMove, false);
+		window.addEventListener('mousedown', onDocumentMouseDown, false);
+	}
+	
+	/** 初始化相机 */
+	function initCamera() {
+		camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 2147483647); // 2147483647
+		camera.position.set(-30, 40, 30);
+	}
+	
+	/** 初始化鼠标控制器 */
+	function initControls() {
+		var target = new THREE.Vector3(0, 0 , 0);
+		
+		controls = new THREE.OrbitControls(camera, render.domElement);
+		controls.target = target;
+		camera.lookAt(target);
+	}
+	
+	/** 当浏览器窗口大小变化时触发 */
+	function onWindowResize() {
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		render.setSize(window.innerWidth, window.innerHeight);
+	}
+	
+	/** 鼠标移动处理函数 */
+	var tubeMat = new THREE.MeshBasicMaterial({color: 0xff0000, transparent: true, opacity: 0.6});
+	var tube;
+	function onDocumentMouseMove(event) {
+		event.preventDefault();
+		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+		
+		// 把屏幕坐标转成 three.js 三维坐标
+		var mouse3d = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+		mouse3d.unproject(camera);
+		var dir = mouse3d.sub(camera.position).normalize();
+		var distance = -camera.position.z / dir.z;
+		var pos3d = camera.position.clone().add(dir.multiplyScalar(distance));
+		
+		//console.log('pos3d: ' + pos3d.x + ', ' + pos3d.y + ', ' + pos3d.z);
+		
+		if (tube) scene.remove(tube);
+		if (guiParams.showRay == false)
+			return;
+		
+		// 加入一束射线
+		var linePoints = [];
+		linePoints.push(new THREE.Vector3(camera.position.x, camera.position.y-0.2, camera.position.z));
+		linePoints.push(new THREE.Vector3(pos3d.x, pos3d.y, pos3d.z));
+		var tubeGeometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(linePoints), 60, 0.001);
+		
+		tube = new THREE.Mesh(tubeGeometry, tubeMat);
+		tube.name = 'tube';
+		scene.add(tube);
+	}
+	
+	/** 鼠标移动处理函数 */
+	function onDocumentMouseDown(event) {
+		event.preventDefault();
+		if (event.target.tagName != 'CANVAS')
+			return;
+		raycaster.setFromCamera(mouse, camera);
+		var intersects = raycaster.intersectObjects([scene.getObjectByName('cube'), 
+			scene.getObjectByName('sphere'), 
+			scene.getObjectByName('cylinder')], 
+			false);
+		if (intersects.length < 1) {
+			highlightBox.visible = false;
+			return;
+		}
+		var intersected = intersects[0].object;
+		intersected.geometry.computeBoundingBox();
+		highlightBox.box.setFromCenterAndSize(intersected.position, intersected.geometry.boundingBox.getSize().multiplyScalar(1.03));
+		highlightBox.visible = true;
+	}
+	
+	/** 渲染场景 */
+	function renderScene() {
+		stats.update();
+		//animateMesh(); // 使物体动
+		
+		requestAnimationFrame(renderScene);
+		render.render(scene, camera);
+	}
+	
+	/** 旋转物体 */
+	var rstep = 0;
+	var bstep = 0;
+	var sstep = 0;
+	function animateMesh() {
+		rstep += guiParams.rotationSpeed;
+		bstep += guiParams.bouncingSpeed;
+		sstep += guiParams.scalingSpeed;
+		scene.traverse(function(mesh) {
+			if (!(mesh instanceof THREE.Mesh)) {
+				return;
+			}
+			if (mesh.name == 'cube') {
+				mesh.rotation.x = rstep;
+				mesh.rotation.y = rstep;
+				mesh.rotation.z = rstep;
+			}
+			if (mesh.name == 'sphere') {
+				var px = 20 + ( 10 * (Math.cos(bstep)));
+				var py = 2 + ( 10 * Math.abs(Math.sin(bstep)));
+				mesh.position.set(px, py, 0);
+			}
+			if (mesh.name == 'cylinder') {
+				var scaleX = Math.abs(Math.sin(sstep / 4));
+				var scaleY = Math.abs(Math.cos(sstep / 5));
+				var scaleZ = Math.abs(Math.sin(sstep / 7));
+				mesh.scale.set(scaleX, scaleY, scaleZ);
+			}
+		});
+	}
+	
+	/** 创建一个坐标轴：X（橙色）、Y（绿色）、Z（蓝色） */
+	function createAxesHelper() {
+		axesHelper = new THREE.AxesHelper(60);
+		scene.add(axesHelper);
+	}
+	
+	/** 创建一个 AmbientLight 环境光源 */
+	function createAmbientLight() {
+		ambientLight = new THREE.AmbientLight(0x0c0c0c);
+		scene.add(ambientLight);
+	}
+	
+	/** 创建一个 AmbientLight 环境光源 */
+	function createSpotLight() {
+		spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.position.set(-40, 60, -10);
+        spotLight.castShadow = true;
+		spotLight.shadow.mapSize.set(2048, 2048); // 必须是 2的幂，默认值为 512
+        scene.add(spotLight);
+		//cameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
+		//scene.add(cameraHelper);
+	}
+	
+	/** 用来保存那些需要修改的变量 */
+	function createGuiControls() {
+		guiParams = new function() {
+			this.rotationSpeed = 0.02;
+			this.bouncingSpeed = 0.03;
+			this.scalingSpeed = 0.03;
+			this.showRay = true;
+		}
+		/** 定义 dat.GUI 对象，并绑定 guiParams 的几个属性 */
+		var gui = new dat.GUI();
+		gui.add(guiParams, 'rotationSpeed', 0, Math.PI, 0.01);
+		gui.add(guiParams, 'bouncingSpeed', 0, Math.PI, 0.01);
+		gui.add(guiParams, 'scalingSpeed', 0, Math.PI, 0.01);
+		gui.add(guiParams, 'showRay');
+	}
+	
+	/** 加入地面 */
+	function createGround() {
+		var groundGeom = new THREE.PlaneGeometry(60, 20);
+		var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xbbbbbb, side: THREE.DoubleSide} ); // 0x777777
+		var ground = new THREE.Mesh(groundGeom, groundMaterial);
+		ground.name = 'ground';
+		ground.receiveShadow = true; // 地面接收阴影
+		ground.rotation.x = -0.5 * Math.PI;
+		ground.position.set(15, 0, 0);
+		scene.add(ground);
+	}
+	
+	/** 创建网格 */
+	function createMesh() {
+		// 创建方块
+        var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
+        var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
+        var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+		cube.name = 'cube';
+        cube.position.x = -9;
+        cube.position.y = 3;
+        cube.position.z = 0;
+        scene.add(cube);
+		
+		// 创建球体
+		var sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
+        var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
+        var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+		sphere.name = 'sphere';
+        sphere.position.x = 20;
+        sphere.position.y = 0;
+        sphere.position.z = 2;
+        scene.add(sphere);
+		
+		// 创建柱体
+		var cylinderGeometry = new THREE.CylinderGeometry(2, 2, 20);
+        var cylinderMaterial = new THREE.MeshLambertMaterial({color: 0x77ff77});
+        var cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+		cylinder.name = 'cylinder';
+        cylinder.position.set(0, 0, 1);
+        scene.add(cylinder);
+	}
+	
+	/** 创建包围盒 */
+	function createHighlightBox() {
+		var box = new THREE.Box3();
+		box.setFromCenterAndSize( new THREE.Vector3( 1, 1, 1 ), new THREE.Vector3( 2, 1, 3 ) );
+		highlightBox = new THREE.Box3Helper( box, 0xffff00 );
+		highlightBox.visible = false;
+		scene.add(highlightBox);
+	}
+	
+</script>
+</body>
+</html>
