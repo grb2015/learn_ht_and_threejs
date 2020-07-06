@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-
+<!-- 
+    breif : 演示加事件和加文字,即鼠标滑过(点击)某个Mesh/group时，显示其标签。
+    note:   /// 注意:这里cube是一个Mesh,THREEx也允许对group加事件!
+ -->
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -55,7 +58,7 @@
 
         //为几何体添加鼠标事件
         var domEvents   = new THREEx.DomEvents(camera, renderer.domElement)
-        domEvents.addEventListener(cube, 'click', function(event){
+        domEvents.addEventListener(cube, 'click', function(event){          /// 注意:这里cube是一个Mesh,THREEx也允许对group加事件!
             console.log('you clicked on the mesh = ')
             console.log(event.target)
             console.log(event.target.position)

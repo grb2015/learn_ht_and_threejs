@@ -1,0 +1,141 @@
+<!-- 
+	0.主要有如下对象 
+			scene,
+			camera,
+			render,
+			document.body.appendChild( renderer.domElement );   // render需要加入到html的dom中
+			scene.add( mesh or line);
+			renderer.render( scene, camera ); //调用渲染，注意包含了scene和camera对象
+	1.弄清楚坐标系，x,y,z各是调节什么方向的
+	2.mesh or line需要加到scene里面。而camera不需要。在浏览器可通过this.scene / this.camera查看
+
+	本文件由如下功能：
+	1.添加坐标轴
+	2.旋转的实现
+	3.事件的实现
+ -->
+<html>
+	<head>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			/* canvas { width: 100%; height: 100% } */
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script src="js/OrbitControls.js"></script>
+		
+		<script>
+			// step1 创建场景
+			var scene = new THREE.Scene();
+			var raycaster = new THREE.Raycaster();
+    		var mouse = new THREE.Vector2();
+			var tube;
+
+			// step2 设置相机  透视相机文档：https://threejs.org/docs/#api/zh/cameras/PerspectiveCamera
+			// 关于坐标系,z轴是调节垂直屏幕的方向,x轴调节左右,y轴调节上下
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+			var axesHelper = new THREE.AxesHelper( 50 );   // The X axis is red. The Y axis is green. The Z axis is blue.
+			scene.add(axesHelper)
+			camera.position.z = 50;  // 防止cube和摄像机重叠 z轴是调节垂直屏幕的方向
+			// camera.position.x = 5;  //    x轴调节左右
+			// // camera.position.y = 1;  //   y轴调节上下
+			
+			// step3 渲染器
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight ); // 设置渲染范围？
+			document.body.appendChild( renderer.domElement );  // 将render的dom加入到页面中去
+
+			// step4 创建几何体和材质，并把他们组合在一个生成一个对象(Mesh或Line等)
+			var geometry = new THREE.BoxGeometry( 1, 1, 1 );  // new 一个几何体 (这里是Box)
+			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+			var cube = new THREE.Mesh( geometry, material ); // 几何体 + 材质组成一个Mesh. 这里cube是Mesh对象！
+			cube.name = 'cube1'
+
+			cube.position.x = 5   // x轴调节左右
+			cube.position.y = 3    //y调节上下
+			// step5 将对象加入场景中
+			scene.add( cube );
+
+			// step4 创建几何体和材质，并把他们组合在一个生成一个对象(Mesh或Line等)
+			var geometry = new THREE.BoxGeometry( 2, 2,2 );  // new 一个几何体 (这里是Box)
+			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+			var cube2 = new THREE.Mesh( geometry, material ); // 几何体 + 材质组成一个Mesh. 这里cube是Mesh对象！
+			cube2.name = 'cube2'
+
+			cube2.position.x = 0 // x轴调节左右
+			cube2.position.y =0    //y调节上下
+			// step5 将对象加入场景中
+			scene.add( cube2 );
+			console.log(scene)
+
+			
+
+			// renderer.render( scene, camera );   // 一次渲染
+			var controls = new THREE.OrbitControls( camera, renderer.domElement );
+			controls.update();
+			
+			var animate = function () {		// animate函数会周期的执行,所以这里还是重复渲染就成了动画
+				requestAnimationFrame( animate );
+
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+
+				renderer.render( scene, camera ); // step6 进行渲染
+			};
+			animate();
+
+			/***************************************************************
+			* breif        :   通过射线检测单击的物体
+			* inputs       :   [string]    content :   文字内容
+			*                  [float ]    x       :   x坐标     
+			*                  [float ]    y       :   y坐标     
+			*                  [float ]    z       :   z坐标     
+			* returns      :   None
+			* note         :   TODO :
+			*                      1.字体为helvetiker_regular.typeface.json  
+			*                      2.颜色为红色，颜色大小后面可以作为参数传入。 
+			* 
+			***************************************************************/ 
+			function onDocumentMouseDown(event) {
+				event.preventDefault();
+				if (event.target.tagName != 'CANVAS')
+					return;
+				raycaster.setFromCamera(mouse, camera);
+				console.log("######### scene.getObjectByName('cube1')")
+				console.log(scene.getObjectByName('cube1'))
+				console.log("######### scene.getObjectByName('cube2')")
+				console.log(scene.getObjectByName('cube2'))
+				var intersects = raycaster.intersectObjects([scene.getObjectByName('cube1'),scene.getObjectByName('cube2')], 
+					false);
+				console.log("#################### intersects = ")
+				console.log(intersects)
+				if (intersects.length < 1) {
+					return;
+				}
+				var intersected = intersects[0].object;
+
+			}
+
+
+			function onDocumentMouseMove(event) {
+				event.preventDefault();
+				mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+				mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+				
+				// 把屏幕坐标转成 three.js 三维坐标
+				var mouse3d = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+				mouse3d.unproject(camera);
+				var dir = mouse3d.sub(camera.position).normalize();
+				var distance = -camera.position.z / dir.z;
+				var pos3d = camera.position.clone().add(dir.multiplyScalar(distance));
+				
+			}
+
+
+			window.addEventListener('mousedown', onDocumentMouseDown, false);
+			window.addEventListener('mousemove', onDocumentMouseMove, false);
+		</script>
+	</body>
+</html>

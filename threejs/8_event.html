@@ -63,7 +63,7 @@
 		scene = new THREE.Scene();
 		
 		//createAxesHelper();
-		createAmbientLight();
+		createAmbientLight();	 
 		createSpotLight();
 		createGuiControls();
 		
@@ -163,6 +163,8 @@
 			scene.getObjectByName('sphere'), 
 			scene.getObjectByName('cylinder')], 
 			false);
+		console.log("#################### intersects = ")
+		console.log(intersects)
 		if (intersects.length < 1) {
 			highlightBox.visible = false;
 			return;

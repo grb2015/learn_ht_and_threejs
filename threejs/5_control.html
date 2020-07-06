@@ -4,8 +4,18 @@
     date: 20200601 created
     note:
         疑问1： 场景中的平面是从哪里来的?
-        答：    根本就没有设置平面，只是用了scene.backgroup然后结合controls.maxPolarAngle = Math.PI / 2; 
-                来产生一个平面的效果
+                答：    根本就没有设置平面，只是用了scene.backgroup然后结合controls.maxPolarAngle = Math.PI / 2; 
+                        来产生一个平面的效果
+        疑问2： 该例子的相机，物体位置，灯光位置，控制器位置都是如何设置的?
+                camera.position.set( 400, 200, 0 );
+                dirlight.position.set( 1, 1, 1 );
+                dirlight.position.set( - 1, - 1, - 1 );
+                AmbientLight由于是环境光，不需要设置位置
+                物体： x在[-800,800] ，y=0 ,z在[-800,800]
+                controls.position0=(400,200,0) 可见它与camera一样
+                controls.target0=(0,0,0)
+                controls.target=(0,0,0)
+        问题3： controls
 
  -->
 <!DOCTYPE html>
@@ -76,7 +86,8 @@
 				controls.maxDistance = 500;
 
 				controls.maxPolarAngle = Math.PI / 2;   // 设置垂直方法能选择的角度，这里为90°
-
+                console.log("controls = ")
+                console.log(controls)
 				// step5:在场景中加入物体  world
 
 				var geometry = new THREE.CylinderBufferGeometry( 0, 10, 30, 4, 1 );
@@ -85,11 +96,12 @@
 				for ( var i = 0; i < 500; i ++ ) {
 
 					var mesh = new THREE.Mesh( geometry, material );
-					mesh.position.x = Math.random() * 1600 - 800;
+					mesh.position.x = Math.random() * 1600 - 800;  // Math.random() 为[0,1]之间，所以mesh.position.x在[-800,800]之间
 					mesh.position.y = 0;
 					mesh.position.z = Math.random() * 1600 - 800;
 					mesh.updateMatrix();        //这两句比较关键 可参考https://threejs.org/docs/#manual/zh/introduction/Matrix-transformations
 					mesh.matrixAutoUpdate = false;
+                    console.log(mesh.position.x)
 					scene.add( mesh );
 
 				}
