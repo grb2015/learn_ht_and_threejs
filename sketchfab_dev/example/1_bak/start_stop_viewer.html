@@ -1,0 +1,129 @@
+<html>
+    <head>
+        <script type="text/javascript" src="https://static.sketchfab.com/api/sketchfab-viewer-1.8.2.js"></script>
+        <script type="text/javascript" src="./start_stop_viewer.js"></script>
+        <style>
+            html, body {
+                padding: 0;
+                margin: 0;
+                width: 100vw;
+                height: 100vh;
+
+                -webkit-font-smoothing: antialiased;
+                -moz-font-smoothing: grayscale;
+                font-family: Open Sans, sans-serif;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .iframe-container {
+                position: relative;
+                width: 100%;
+                flex: 1;
+                display: flex;
+            }
+
+            .iframe-container > iframe {
+                border: 0;
+                width: 100%;
+                flex: 1;
+            }
+
+            .controls {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                flex-shrink: 0;
+                height: 80px;
+                padding: 15px 0 0 15px;
+                background-color: #F2F2F2;
+                border-top: 1px solid #e7e7e7;
+                overflow: scroll;
+            }
+
+            .controls > * {
+                margin-right: 15px;
+                margin-bottom: 15px;
+            }
+
+            button {
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                border: 2px solid transparent;
+                border-radius: 4px;
+                padding: 0 13px;
+                font-family: "Open Sans", sans-serif;
+                font-weight: 600;
+                text-align: center;
+                text-shadow: none;
+                text-transform: uppercase;
+                line-height: 1.2;
+                cursor: pointer;
+                outline: none;
+                transition: background .2s;
+                color: white;
+                background-color: #1caad9;
+                height: 25px;
+                font-size: 12px;
+            }
+
+            button.disabled {
+                cursor: default;
+                pointer-events: none;
+                color: #ccc;
+                background-color: #e7e7e7;
+                transition: background-color .25s ease;
+            }
+
+            .description {
+                box-sizing: border-box;
+                position: absolute;
+                padding: 30px;
+                top: 30px;
+                right: 30px;
+                width: 240px;
+                background: rgba(0, 0, 0, 0.6);
+                color: #ffffff;
+                border-radius: 3px;
+                z-index: 2;
+
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            .description.--active {
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .description iframe,
+            .description img {
+                max-width: 100%;
+                height: auto;
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="iframe-container">
+                <iframe title="Sketchfab Viewer" src="" id="api-frame"></iframe>
+             </div>
+             <div class="controls" id="controls">
+               <pre id="Info"></pre>
+             </div>
+        </div>
+    </body>
+</html>

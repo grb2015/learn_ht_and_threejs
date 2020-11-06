@@ -1,0 +1,76 @@
+<!-- https://sketchfab.com/developers/viewer  第一个例子 演示如何使用 -->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sketchfab Viewer API example</title>
+
+    <!-- Insert this script -->
+    <script type="text/javascript" src="https://static.sketchfab.com/api/sketchfab-viewer-1.8.2.js"></script>
+    
+</head>
+
+<body>
+    <!-- Insert an empty iframe -->
+    <iframe src="" id="api-frame" allow="autoplay; fullscreen; vr" allowvr allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+    <!-- Initialize the viewer -->
+    <script type="text/javascript">
+// Sketchfab Viewer API: Start/Stop the viewer
+var version = '1.8.2';
+var uid = 'dd958716be0b4786b8700125eec618e5';
+var iframe = document.getElementById('api-frame');
+var client = new window.Sketchfab(version, iframe);
+
+var error = function() {
+    console.error('Sketchfab API error');
+};
+
+var success = function(api) {
+    api.addEventListener('viewerstart', function() {
+        console.log('viewerstart');
+    });
+    api.addEventListener('viewerstop', function() {
+        console.log('viewerstop');
+    });
+
+    api.start(function() {
+        document.getElementById('start').addEventListener('click', function() {
+            api.start();
+        });
+
+        document.getElementById('stop').addEventListener('click', function() {
+            api.stop();
+        });
+
+        api.addEventListener('viewerready', function() {
+            console.log('viewerReady');
+        });
+    });
+};
+client.init(uid, {
+    success: success,
+    error: error,
+    autostart: 1,
+    preload: 1
+});
+//////////////////////////////////
+// GUI Code
+//////////////////////////////////
+function initGui() {
+    var controls = document.getElementById('controls');
+    var buttonsText = '';
+    buttonsText += '<button id="start">Start</button>';
+    buttonsText += '<button id="stop">Stop</button>';
+    controls.innerHTML = buttonsText;
+}
+initGui();
+
+//////////////////////////////////
+// GUI Code end
+//////////////////////////////////
+
+    </script>
+</body>
+</html>
