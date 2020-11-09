@@ -136,7 +136,7 @@
     <script type="text/javascript">
         // Sketchfab Viewer API: Change Texture/material
         var version = '1.8.2';
-        var uid = '96f558dea845400495e03e64d053b517';
+        var uid = 'a0900d05fa4f41b392dfad304c32a7fa';
         var iframe = document.getElementById('api-frame');
         var client = new window.Sketchfab(version, iframe);
 
@@ -170,6 +170,25 @@
                                 }
                                 // get the id from that log
                                 console.log(result);
+                                /* rbg added begin */ 
+                                var groupObjects = result.children[0].children[0].children
+                                console.log("######### groupObjects= ",groupObjects)
+                                for(var i=0;i<groupObjects.length;i++){
+                                    console.log("groupObjects[%d]= ",i,groupObjects[i])
+                                    // groupObjects[i].materialID = "f56193de-f453-4596-a3cb-31c20f07883d"
+                                    groupObjects[i].materialID = "f56193de-f453-4596-a3cb-31c20f07883d"
+
+                                    var geoObject = groupObjects[i].children;
+                                    for(var j=0;j<geoObject.length;j++){
+                                        console.log("geoObject[%d]= ",j,geoObject[j])
+                                        // geoObject[j].materialID = "f56193de-f453-4596-a3cb-31c20f07883d"
+                                        geoObject[j].materialID = "f56193de-f453-4596-a3cb-31c20f07883d"
+                                    }
+                                }
+                                for(var i=0;i<groupObjects.length;i++){
+                                    console.log("after set groupObjects[%d]= ",i,groupObjects[i])
+                                }
+                                /* rbg added end */ 
                             });
                     var textures = [];         // 作为一个备份
 

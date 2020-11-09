@@ -1,0 +1,110 @@
+<!-- https://sketchfab.com/developers/viewer  
+ 
+-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sketchfab Viewer API example</title>
+    <style>
+       
+html, body {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: grayscale;
+    font-family: Open Sans, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.iframe-container {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    display: flex;
+}
+
+.iframe-container > iframe {
+    border: 0;
+    width: 100%;
+    flex: 1;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    height: 80px;
+    padding: 15px 0 0 15px;
+    background-color: #F2F2F2;
+    border-top: 1px solid #e7e7e7;
+    overflow: scroll;
+}
+
+    .controls > * {
+        margin-right: 15px;
+        margin-bottom: 15px;
+    }
+
+
+    .description {
+        box-sizing: border-box;
+        position: absolute;
+        padding: 30px;
+        top: 30px;
+        right: 30px;
+        width: 240px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #ffffff;
+        border-radius: 3px;
+        z-index: 2;
+
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .description.--active {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .description iframe,
+    .description img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    </style>
+
+    <!-- Insert this script -->
+    <script type="text/javascript" src="https://static.sketchfab.com/api/sketchfab-viewer-1.8.2.js"></script>
+</head>
+
+<body>
+    <!-- Insert an empty iframe -->
+    <div class="container">
+        <div class="iframe-container">
+            <iframe title="Sketchfab Viewer" src="" id="api-frame"></iframe>
+         </div>
+         <div class="controls" id="controls">
+           <pre id="Info"></pre>
+         </div>
+    </div>
+    <script type="text/javascript" src="./my_part_show_hide _vue.js"></script>
+
+</body>
+</html>

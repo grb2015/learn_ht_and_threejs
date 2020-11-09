@@ -9,79 +9,79 @@
     <title>Sketchfab Viewer API example</title>
     <style>
        
-        html, body {
-            padding: 0;
-            margin: 0;
-            width: 100vw;
-            height: 100vh;
+html, body {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
 
-            -webkit-font-smoothing: antialiased;
-            -moz-font-smoothing: grayscale;
-            font-family: Open Sans, sans-serif;
-        }
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: grayscale;
+    font-family: Open Sans, sans-serif;
+}
 
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
 
-        .iframe-container {
-            position: relative;
-            width: 100%;
-            flex: 1;
-            display: flex;
-        }
+.iframe-container {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    display: flex;
+}
 
-        .iframe-container > iframe {
-            border: 0;
-            width: 100%;
-            flex: 1;
-        }
+.iframe-container > iframe {
+    border: 0;
+    width: 100%;
+    flex: 1;
+}
 
-        .controls {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            flex-shrink: 0;
-            height: 80px;
-            padding: 15px 0 0 15px;
-            background-color: #F2F2F2;
-            border-top: 1px solid #e7e7e7;
-            overflow: scroll;
-        }
+.controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    height: 80px;
+    padding: 15px 0 0 15px;
+    background-color: #F2F2F2;
+    border-top: 1px solid #e7e7e7;
+    overflow: scroll;
+}
 
-        .controls > * {
-            margin-right: 15px;
-            margin-bottom: 15px;
-        }
+.controls > * {
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
 
-        button {
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-                position: relative;
-                border: 2px solid transparent;
-                border-radius: 4px;
-                padding: 0 13px;
-                font-family: "Open Sans", sans-serif;
-                font-weight: 600;
-                text-align: center;
-                text-shadow: none;
-                text-transform: uppercase;
-                line-height: 1.2;
-                cursor: pointer;
-                outline: none;
-                transition: background .2s;
-                color: white;
-                background-color: #1caad9;
-                height: 25px;
-                font-size: 12px;
-            }
+button {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        padding: 0 13px;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 600;
+        text-align: center;
+        text-shadow: none;
+        text-transform: uppercase;
+        line-height: 1.2;
+        cursor: pointer;
+        outline: none;
+        transition: background .2s;
+        color: white;
+        background-color: #1caad9;
+        height: 25px;
+        font-size: 12px;
+    }
 
     button.disabled {
         cursor: default;
@@ -138,7 +138,11 @@
     <script type="text/javascript">
         // Sketchfab Viewer API: Start/Stop the viewer
         var version = '1.8.2';
-        var uid = 'dd958716be0b4786b8700125eec618e5';
+        // var uid = '0bf7a9cd13cc4b1a86497522bb744cbc';
+        // var uid = 'e5ab9d2e39f446639cc76d8467ea666f';
+        var uid = 'a0900d05fa4f41b392dfad304c32a7fa';
+        
+        
         var iframe = document.getElementById('api-frame');
         var client = new window.Sketchfab(version, iframe);
 
@@ -146,7 +150,22 @@
             console.error('Sketchfab API error');
         };
 
+
         var success = function(api) {
+
+            api.addEventListener('click',function(info) {
+                        console.log("click info = ",info)
+                        if (info && info.material) {
+                            api.highlightMaterial(info.material);
+                        } else {
+                            api.highlightMaterial();       
+                        }
+                    },
+                    {
+                        pick: 'fast'
+                    }
+                );
+
             api.start(function() {
                 api.addEventListener('viewerready', function() {
                     api.getSceneGraph(function(err, result) {       // 获取所有的节点 https://sketchfab.com/developers/viewer/functions#api-getSceneGraph
@@ -155,9 +174,10 @@
                             return;
                         }
                         // get the id from that log
-                        console.log(result);
+                        console.log("all note = ",result);
                     });
-                    var id = 191;           // 这里是部件的instanceid
+                    // var id = 3590;           // 这里是部件的instanceid
+                    var id = 6265;           // 这里是部件的instanceid
                     document.getElementById('hide').addEventListener('click', function() {
                         console.log("### hide  id = ")
                         console.log(id)
